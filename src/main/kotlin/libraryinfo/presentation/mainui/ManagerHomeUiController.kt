@@ -4,6 +4,7 @@ import javafx.event.ActionEvent
 import libraryinfo.presentation.internal.Globals
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.presentation.internal.UiLoader
+import libraryinfo.service.LoginService
 
 class ManagerHomeUiController : BaseHomepageUiController() {
 
@@ -12,7 +13,7 @@ class ManagerHomeUiController : BaseHomepageUiController() {
 
     fun initialize() {
         super.refresh()
-        textWelcome.text = "欢迎：总经理" + Globals.currentUser.name
+        textWelcome.text = "欢迎：总经理" + LoginService.currentUser?.name
     }
 
     override fun load(): UiElement {

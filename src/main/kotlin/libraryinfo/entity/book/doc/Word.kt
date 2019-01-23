@@ -1,11 +1,11 @@
-package libraryinfo.domain.book.doc
+package libraryinfo.entity.book.doc
 
-import libraryinfo.domain.book.reader.Reader
+import libraryinfo.entity.book.reader.Reader
 
-class PDF: Doc {
+class Word: Doc {
     override val reader: Reader
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-    override val name: String
-        get() = "PDF"
 
+    override val name: String
+        get() = "Word"
 }

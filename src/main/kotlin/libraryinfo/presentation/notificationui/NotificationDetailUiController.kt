@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXButton
 import com.jfoenix.controls.JFXTextArea
 import com.jfoenix.controls.JFXTextField
 import javafx.event.ActionEvent
-import libraryinfo.domain.notification.Notification
+import libraryinfo.entity.notification.Notification
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.presentation.internal.UiLoader
@@ -42,7 +42,7 @@ class NotificationDetailUiController : UiController {
 
 
     fun onBtnAcknowledgeClicked(actionEvent: ActionEvent) {
-
+        notification.read()
 
     }
 

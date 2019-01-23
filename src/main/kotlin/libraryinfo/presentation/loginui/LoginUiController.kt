@@ -10,15 +10,12 @@ import javafx.scene.Scene
 import javafx.scene.control.Label
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.BorderPane
-import javafx.scene.layout.Pane
 import javafx.scene.layout.StackPane
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import libraryinfo.presentation.helpui.*
 import libraryinfo.presentation.internal.*
-import libraryinfo.presentation.mainui.BaseHomepageUiController
-import libraryinfo.presentation.mainui.FrameworkUiController
-import libraryinfo.repository.user.UserRepository
+import libraryinfo.service.LoginService
 import java.time.LocalDateTime
 
 class LoginUiController : UiController {
@@ -31,8 +28,8 @@ class LoginUiController : UiController {
 
     fun init(stage: Stage) {
         Globals.stage = stage
-        BorderlessStageHelper.makeDraggable(stage, rootPane)
-        BorderlessStageHelper.makeResizeable(stage)
+        makeDraggable(stage, rootPane)
+        makeResizeable(stage)
     }
 
     fun initialize() {
@@ -82,22 +79,18 @@ class LoginUiController : UiController {
 
                 val username = usernameField.text
 
-                val user = UserRepository.getUser(username, passwordField.text)
-
-                if (user != null) {
+                if (LoginService.login(username, passwordField.text)) {
 
                     Globals.closeStage()
 
                     // login successful
                     // init the globals
 
-                    Globals.currentUser = user
                     Globals.loginTime = LocalDateTime.now()
 
                     val newStage = Stage()
 
-
-                    val uiElement = user.mainUiElement
+                    val uiElement = LoginService.currentUser!!.mainUiElement
 
                     val scene = Scene(uiElement.component)
                     newStage.scene = scene

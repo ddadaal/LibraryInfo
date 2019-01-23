@@ -24,6 +24,7 @@ import libraryinfo.presentation.internal.Globals
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.presentation.notificationui.NotificationUiController
+import libraryinfo.service.LoginService
 import libraryinfo.util.DateHelper
 
 const val DEPTH = 3
@@ -57,8 +58,8 @@ abstract class FrameworkUiController : UiController {
     }
 
     fun setStage(stage: Stage) {
-        BorderlessStageHelper.makeResizeable(stage)
-        BorderlessStageHelper.makeDraggable(stage, titleBar)
+        makeResizeable(stage)
+        makeDraggable(stage, titleBar)
 
         JFXDepthManager.setDepth(drawer, DEPTH)
         JFXDepthManager.setDepth(titleBar, DEPTH)
@@ -92,7 +93,7 @@ abstract class FrameworkUiController : UiController {
         timeline.play()
         switchBackToHome()
 
-        promptLabel.text = "欢迎你！" + Globals.currentUser.name
+        promptLabel.text = "欢迎你！" + LoginService.currentUser?.name
 
         notificationUiElement = NotificationUiController().load()
     }
