@@ -5,8 +5,10 @@ import libraryinfo.domain.entity.book.instance.BookInstance
 import libraryinfo.vo.borrowrecord.BorrowRecordVo
 import libraryinfo.domain.entity.notification.Notification
 import libraryinfo.domain.entity.user.usertype.UserType
+import libraryinfo.domain.exception.BorrowBookException
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.repository.user.UserRepository
+import libraryinfo.vo.usermanagement.UserInfoVo
 import java.io.Serializable
 import java.time.Duration
 import java.time.LocalDateTime
@@ -33,15 +35,15 @@ class User() : Serializable, ProfileChangeObserver {
         get() = notifications.filter { !it.read }
 
     constructor(
-        id: String,
-        username: String,
-        name: String,
-        password: String,
-        type: UserType,
-        notifications: ArrayList<Notification>,
-        borrowRecords: ArrayList<BorrowRecordVo>,
-        ownedBookInstances: ArrayList<BookInstance>
-    ): this() {
+            id: String,
+            username: String,
+            name: String,
+            password: String,
+            type: UserType,
+            notifications: ArrayList<Notification>,
+            borrowRecords: ArrayList<BorrowRecordVo>,
+            ownedBookInstances: ArrayList<BookInstance>
+    ) : this() {
         this.username = username
         this.id = id
         this.name = name
@@ -64,6 +66,8 @@ class User() : Serializable, ProfileChangeObserver {
 
             UserRepository.save()
         }
+        else throw BorrowBookException()
+
     }
 
     fun returnBook(instance: BookInstance) {
@@ -77,10 +81,11 @@ class User() : Serializable, ProfileChangeObserver {
         }
     }
 
-    fun updateInformation() {
-
+    fun updateInformation(info: UserInfoVo) {
+        this.name = info.name
+        this.password = info.password
         val time = LocalDateTime.now()
-        profileChangeObservers.forEach { it.onProfileChange(this, time )}
+        profileChangeObservers.forEach { it.onProfileChange(this, time) }
 
         UserRepository.save()
     }

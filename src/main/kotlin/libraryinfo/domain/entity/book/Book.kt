@@ -4,6 +4,7 @@ import libraryinfo.domain.entity.book.doc.Doc
 import libraryinfo.domain.entity.book.instance.BookInstance
 import libraryinfo.domain.exception.NoMoreInstanceException
 import libraryinfo.repository.book.BookRepository
+import libraryinfo.vo.bookmanagement.BookInfoVo
 import java.io.Serializable
 
 class Book(): Serializable {
@@ -31,6 +32,12 @@ class Book(): Serializable {
     fun `return`(instance: BookInstance) {
         this.instances.add(instance)
         BookRepository.save()
+    }
+
+    fun edit(info: BookInfoVo){
+        this.category = info.category
+        this.name = info.name
+        this.availableDocs.addAll(info.availableDocs)
     }
 
 }

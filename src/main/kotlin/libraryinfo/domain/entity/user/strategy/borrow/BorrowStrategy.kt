@@ -5,5 +5,9 @@ import java.io.Serializable
 import java.time.Duration
 
 interface BorrowStrategy : Serializable {
-    fun canBorrowBook(book: Book, duration: Duration): Boolean
+    val duration: Duration
+    val availableCategories: ArrayList<String>
+    fun canBorrowBook(book: Book, duration: Duration): Boolean {
+        return book.category in availableCategories && duration < this.duration
+    }
 }
