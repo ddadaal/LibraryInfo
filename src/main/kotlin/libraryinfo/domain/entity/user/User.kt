@@ -39,7 +39,8 @@ class User() : Serializable, ProfileChangeObserver {
         password: String,
         type: UserType,
         notifications: ArrayList<Notification>,
-        borrowRecords: ArrayList<BorrowRecordVo>
+        borrowRecords: ArrayList<BorrowRecordVo>,
+        ownedBookInstances: ArrayList<BookInstance>
     ): this() {
         this.username = username
         this.id = id
@@ -48,6 +49,7 @@ class User() : Serializable, ProfileChangeObserver {
         this.type = type
         this.notifications = notifications
         this.borrowRecords = borrowRecords
+        this.ownedBookInstances = ownedBookInstances
     }
 
     fun borrowBook(bookInstance: BookInstance, duration: Duration) {

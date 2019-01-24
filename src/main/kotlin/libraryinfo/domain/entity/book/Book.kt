@@ -14,12 +14,12 @@ class Book(): Serializable {
 
     lateinit var instances: ArrayList<BookInstance>
 
-    constructor(id: String, name: String, category: String, availableDocs: ArrayList<Doc>): this() {
+    constructor(id: String, name: String, category: String, availableDocs: ArrayList<Doc>, instances: ArrayList<BookInstance>): this() {
         this.id = id
         this.name = name
         this.category = category
         this.availableDocs = availableDocs
-        this.instances = ArrayList()
+        this.instances = instances
     }
 
     fun borrow(instance: BookInstance) {

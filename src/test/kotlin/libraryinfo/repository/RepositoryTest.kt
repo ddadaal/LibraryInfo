@@ -28,6 +28,7 @@ class RepositoryTest {
                             "Test notification"
                         )
                     ),
+                    ArrayList(),
                     ArrayList()
                 )
             )

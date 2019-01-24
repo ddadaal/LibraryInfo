@@ -12,22 +12,17 @@ class BookInstance(): Serializable {
         get() = BookRepository.data.find { it.id == bookId }!!
 
 
-    constructor(id: String, bookId: String, recordId: String?): this() {
+    constructor(id: String, bookId: String): this() {
         this.id = id
         this.bookId = bookId
     }
 
     fun returnBook() {
-
         book.`return`(this)
-
-        BookRepository.save()
-
     }
 
     fun borrowBook() {
         book.borrow(this)
-        BookRepository.save()
     }
 
 }
