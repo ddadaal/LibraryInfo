@@ -1,6 +1,8 @@
 package libraryinfo.domain.entity.book
 
 import libraryinfo.domain.entity.book.doc.Doc
+import libraryinfo.domain.entity.book.instance.BookInstance
+import libraryinfo.domain.exception.NoMoreInstanceException
 import libraryinfo.repository.book.BookRepository
 import java.io.Serializable
 
@@ -10,22 +12,25 @@ class Book(): Serializable {
     lateinit var category: String
     lateinit var availableDocs: ArrayList<Doc>
 
-    var borrowRecordId: String? = null
+    lateinit var instances: ArrayList<BookInstance>
 
     constructor(id: String, name: String, category: String, availableDocs: ArrayList<Doc>): this() {
         this.id = id
         this.name = name
         this.category = category
         this.availableDocs = availableDocs
+        this.instances = ArrayList()
     }
 
-    fun beBorrowed(recordId: String) {
-        this.borrowRecordId = recordId
+    fun borrow(instance: BookInstance) {
+
+        this.instances.remove(instance)
         BookRepository.save()
     }
 
-    fun beReturned() {
-        this.borrowRecordId = null
+    fun `return`(instance: BookInstance) {
+        this.instances.add(instance)
         BookRepository.save()
     }
+
 }

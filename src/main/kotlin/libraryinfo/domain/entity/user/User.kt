@@ -1,7 +1,8 @@
 package libraryinfo.domain.entity.user
 
 import libraryinfo.domain.entity.book.Book
-import libraryinfo.domain.vo.borrowrecord.BorrowRecord
+import libraryinfo.domain.entity.book.instance.BookInstance
+import libraryinfo.vo.borrowrecord.BorrowRecordVo
 import libraryinfo.domain.entity.notification.Notification
 import libraryinfo.domain.entity.user.usertype.UserType
 import libraryinfo.presentation.internal.UiElement
@@ -20,7 +21,8 @@ class User() : Serializable, ProfileChangeObserver {
     lateinit var password: String
     lateinit var type: UserType
     lateinit var notifications: ArrayList<Notification>
-    lateinit var borrowRecords: ArrayList<BorrowRecord>
+    lateinit var ownedBookInstances: ArrayList<BookInstance>
+    lateinit var borrowRecords: ArrayList<BorrowRecordVo>
 
     private var profileChangeObservers = ArrayList<ProfileChangeObserver>()
 
@@ -37,7 +39,7 @@ class User() : Serializable, ProfileChangeObserver {
         password: String,
         type: UserType,
         notifications: ArrayList<Notification>,
-        borrowRecords: ArrayList<BorrowRecord>
+        borrowRecords: ArrayList<BorrowRecordVo>
     ): this() {
         this.username = username
         this.id = id
@@ -48,24 +50,26 @@ class User() : Serializable, ProfileChangeObserver {
         this.borrowRecords = borrowRecords
     }
 
-    fun borrowBook(book: Book, duration: Duration) {
-        if (type.borrowStrategy.canBorrowBook(book, duration)) {
+    fun borrowBook(bookInstance: BookInstance, duration: Duration) {
+        if (type.borrowStrategy.canBorrowBook(bookInstance.book, duration)) {
+
             val currentTime = LocalDateTime.now()
-            val record = BorrowRecord(currentTime, book.id, duration, null)
+            val record = BorrowRecordVo(currentTime, bookInstance.id, duration, null)
             borrowRecords.add(record)
 
-            book.beBorrowed(record.id)
+            bookInstance.borrowBook()
+            ownedBookInstances.add(bookInstance)
 
             UserRepository.save()
         }
     }
 
-    fun returnBook(book: Book) {
-        val record = borrowRecords.find { it.id == book.borrowRecordId }
+    fun returnBook(instance: BookInstance) {
+        val record = borrowRecords.find { it.bookInstanceId == instance.id }
         if (record != null) {
             record.returnTime = LocalDateTime.now()
 
-            book.beReturned()
+            instance.returnBook()
 
             UserRepository.save()
         }

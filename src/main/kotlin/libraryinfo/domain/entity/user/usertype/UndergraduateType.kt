@@ -7,6 +7,7 @@ import libraryinfo.domain.entity.user.strategy.usermanagement.DynamicUserManagem
 import libraryinfo.domain.entity.user.strategy.usermanagement.UserManagementStrategy
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.presentation.userui.UserUiController
+import libraryinfo.vo.bookmanagement.BookInfoVo
 import java.time.Duration
 
 class UndergraduateType: UserType {
@@ -21,7 +22,12 @@ class UndergraduateType: UserType {
 
     override val userManagementStrategy = DynamicUserManagementStrategy(false, false)
 
-    override val bookManagementStrategy: BookManagementStrategy = TODO()
+    override val bookManagementStrategy: BookManagementStrategy = object : BookManagementStrategy {
+        override fun editBook(bookId: String, info: BookInfoVo) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+    }
 
     override val mainUiElement: UiElement
         get() = UserUiController().load()
