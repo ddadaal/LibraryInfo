@@ -5,13 +5,16 @@ import libraryinfo.entity.borrowrecord.BorrowRecord
 import libraryinfo.entity.notification.Notification
 import libraryinfo.entity.user.usertype.UserType
 import libraryinfo.presentation.internal.UiElement
-import libraryinfo.repository.book.BookRepository
 import libraryinfo.repository.user.UserRepository
 import java.io.Serializable
 import java.time.Duration
 import java.time.LocalDateTime
+import java.io.IOException
 
-class User() : Serializable {
+
+
+class User() : Serializable, ProfileChangeObserver {
+
 
     lateinit var id: String
     lateinit var username: String
@@ -20,6 +23,8 @@ class User() : Serializable {
     lateinit var type: UserType
     lateinit var notifications: ArrayList<Notification>
     lateinit var borrowRecords: ArrayList<BorrowRecord>
+
+    private var profileChangeObservers = ArrayList<ProfileChangeObserver>()
 
     val mainUiElement: UiElement
         get() = type.mainUiElement
@@ -70,16 +75,22 @@ class User() : Serializable {
 
     fun updateInformation() {
 
-        UserRepository.data
-            .filter { it.type.name == "管理员" }
-            .forEach { it.notify("$name 改了用户信息", this)}
+        val time = LocalDateTime.now()
+        profileChangeObservers.forEach { it.onProfileChange(this, time )}
 
         UserRepository.save()
     }
 
-    fun notify(content: String, sender: User) {
-        this.notifications.add(Notification(LocalDateTime.now(), sender.id, content))
+    fun registerProfileChange(observer: ProfileChangeObserver) {
+        profileChangeObservers.add(observer)
+    }
+
+    override fun onProfileChange(user: User, time: LocalDateTime) {
+        this.notifications.add(Notification(LocalDateTime.now(), user.id, "${user.name}改了用户信息"))
         UserRepository.save()
     }
+
+    val isAdmin: Boolean
+        get() = type.isAdmin
 
 }

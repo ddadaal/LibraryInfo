@@ -23,7 +23,7 @@ class NotificationDetailUiController : UiController {
     var exitCallback: (() -> Unit)? = null
 
     fun fillContent(notification: Notification) {
-        this.tfId.text = notification.id.toString()
+        this.tfId.text = notification.id
         this.tfSender.text = notification.senderId
         this.tfDate.text = DateHelper.fromDate(notification.date)
         this.taContent.text = notification.content

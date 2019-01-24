@@ -14,26 +14,31 @@ abstract class Repository<T : Serializable>(
 
     @Suppress("UNCHECKED_CAST")
     private fun retrieveData(): T {
-        FileInputStream(filePath).use { fileIn ->
-            return try {
-                ObjectInputStream(fileIn).use { objIn ->
-                    val obj = objIn.readObject() as T
-                    obj
+        synchronized(Repository::class.java) {
+            FileInputStream(filePath).use { fileIn ->
+                return try {
+                    ObjectInputStream(fileIn).use { objIn ->
+                        val obj = objIn.readObject() as T
+                        obj
+                    }
+                } catch (e: EOFException) {
+                    save(defaultValue)
+                    defaultValue
                 }
-            } catch (e: EOFException) {
-                save(defaultValue)
-                defaultValue
             }
         }
     }
 
     fun save(data: T = this.data) {
-        FileOutputStream(filePath).use { fileOut ->
-            ObjectOutputStream(fileOut).use { out ->
-                out.writeObject(data)
-                this.data = data
+        synchronized(Repository::class.java) {
+            FileOutputStream(filePath).use { fileOut ->
+                ObjectOutputStream(fileOut).use { out ->
+                    out.writeObject(data)
+                    this.data = data
+                }
             }
         }
+
     }
 
     private fun getFilePath(name: String): String {
@@ -58,4 +63,5 @@ abstract class Repository<T : Serializable>(
         return dataFile.absolutePath
 
     }
+
 }

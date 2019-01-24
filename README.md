@@ -33,3 +33,5 @@ https://stackoverflow.com/questions/38431091/using-mvvm-and-ddd-in-wpf-applicati
 https://stackoverflow.com/questions/30118599/having-a-repository-dependent-on-another-repository
 
 https://stackoverflow.com/questions/43362020/repository-and-aggregate-roots-in-domain-driven-design
+
+https://stackoverflow.com/questions/3343277/how-to-automatically-execute-a-method-after-deserialization

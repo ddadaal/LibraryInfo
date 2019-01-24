@@ -17,4 +17,6 @@ interface UserType: Serializable {
 
     val mainUiElement: UiElement
 
+    val isAdmin: Boolean
+
 }
