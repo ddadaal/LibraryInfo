@@ -2,7 +2,6 @@ package libraryinfo.presentation.helpui
 
 import com.jfoenix.controls.JFXSnackbar
 import javafx.css.PseudoClass
-import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
@@ -10,7 +9,6 @@ import javafx.scene.input.MouseEvent
 import libraryinfo.presentation.internal.Globals
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
-import libraryinfo.presentation.internal.UiLoader
 
 import java.awt.Desktop
 import java.io.IOException
@@ -18,6 +16,10 @@ import java.net.URI
 import java.net.URISyntaxException
 
 class AboutPageController : UiController {
+    override fun load(): UiElement {
+        return doLoad("/fxml/helpui/AboutPage.fxml")
+    }
+
     lateinit var textLicense: Label
     lateinit var licenseText: String
 
@@ -68,16 +70,12 @@ class AboutPageController : UiController {
 
     }
 
-    override fun load(): UiElement {
-        return UiLoader<AboutPageController>("/fxml/helpui/AboutPage.fxml").loadAndGetElement()
-    }
-
     fun onLabelClicked(mouseEvent: MouseEvent) {
         val clipboard = Clipboard.getSystemClipboard()
         val content = ClipboardContent()
         content.putString(licenseText)
         clipboard.setContent(content)
-        val bar = JFXSnackbar(Globals.frameworkUiController.dialogContainer)
+        val bar = JFXSnackbar(Globals.framework.dialogContainer)
         bar.enqueue(JFXSnackbar.SnackbarEvent(Label("复制成功"), PseudoClass.getPseudoClass("popout")))
     }
 }

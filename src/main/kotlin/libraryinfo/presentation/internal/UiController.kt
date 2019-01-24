@@ -13,4 +13,9 @@ interface UiController {
     fun onClose() {
 
     }
+
+
+    fun doLoad(fxmlPath: String): UiElement {
+        return UiLoader(fxmlPath).loadAndGetElement()
+    }
 }

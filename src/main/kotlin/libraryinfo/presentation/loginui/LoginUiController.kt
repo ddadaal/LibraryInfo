@@ -15,11 +15,15 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import libraryinfo.presentation.helpui.*
 import libraryinfo.presentation.internal.*
-import libraryinfo.appservice.login.LoginAppService
 import libraryinfo.appservice.login.LoginAppServiceFactory
+import libraryinfo.presentation.mainui.MainUi
 import java.time.LocalDateTime
 
 class LoginUiController : UiController {
+    override fun load(): UiElement {
+        return doLoad("/fxml/loginui/LoginUi.fxml")
+    }
+
     lateinit var passwordField: JFXPasswordField
     lateinit var usernameField: JFXTextField
     lateinit var cancelButton: JFXButton
@@ -93,17 +97,17 @@ class LoginUiController : UiController {
 
                     val newStage = Stage()
 
-                    val uiElement = loginAppService.currentUser!!.mainUiElement
+                    val ui = loginAppService.currentUser!!.mainUiElement
 
-                    val scene = Scene(uiElement.component)
+                    val scene = Scene(ui.component)
                     newStage.scene = scene
                     newStage.height = 900.0
                     newStage.width = 1500.0
                     newStage.initStyle(StageStyle.UNDECORATED)
 
                     // init globals
-                    Globals.frameworkUiController = uiElement.getController()
-                    Globals.frameworkUiController.setStage(newStage)
+                    Globals.frameworkUi = ui.getController<MainUi>()
+                    Globals.framework.setStage(newStage)
 
 
                     newStage.show()
@@ -129,16 +133,4 @@ class LoginUiController : UiController {
         Globals.closeStage()
     }
 
-    /**
-     * Loads the controller.
-     *
-     * @return external loaded ui controller and component
-     */
-    override fun load(): UiElement {
-        return UiLoader<LoginUiController>("/fxml/loginui/LoginUi.fxml").loadAndGetElement()
-    }
-
-    override fun onClose() {
-
-    }
 }

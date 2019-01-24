@@ -1,23 +1,20 @@
 package libraryinfo.presentation.userui
 
 import javafx.event.ActionEvent
-import libraryinfo.presentation.internal.UiElement
-import libraryinfo.presentation.internal.UiLoader
-import libraryinfo.presentation.mainui.FrameworkUiController
-import libraryinfo.presentation.mainui.ManagerUiController
+import libraryinfo.presentation.mainui.Framework
+import libraryinfo.presentation.mainui.MainUi
 import libraryinfo.presentation.userui.reader.TxtReaderUiController
 
-class UserUiController: FrameworkUiController() {
-    override fun load(): UiElement {
-        return UiLoader<UserUiController>("/fxml/userui/UserUi.fxml").loadAndGetElement()
-    }
+class UserUiController: MainUi("/fxml/userui/UserUi.fxml") {
 
-    override fun switchBackToHome() {
-        switchFunction(ManagerUiController::class.java, "主界面", true)
+    override lateinit var framework: Framework
+
+    fun switchBackToHome() {
+        println("switched back to home")
     }
 
     fun onLibraryClicked(actionEvent: ActionEvent) {
-        switchFunction(TxtReaderUiController::class.java, "阅读器", true)
+        framework.switchFunction(TxtReaderUiController().load(), "阅读器")
     }
 
     fun onBorrowClicked(actionEvent: ActionEvent) {

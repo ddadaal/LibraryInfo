@@ -9,7 +9,9 @@
 <?import javafx.scene.text.Font?>
 <VBox prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="libraryinfo.presentation.notificationui.NotificationUiController" spacing="20">
+      fx:controller="libraryinfo.presentation.notificationui.NotificationUiController"
+      spacing="20"
+>
 
     <padding>
         <Insets bottom="10" left="10" right="10" top="10"/>
@@ -27,8 +29,8 @@
         <columns>
             <JFXTreeTableColumn fx:id="tableIdColumn" prefWidth="150" resizable="false" text="消息ID"/>
             <JFXTreeTableColumn fx:id="tableDateColumn" prefWidth="150" text="日期"/>
-            <JFXTreeTableColumn fx:id="tableTypeColumn" prefWidth="150" text="类型"/>
             <JFXTreeTableColumn fx:id="tableSenderColumn" prefWidth="150" text="发送者"/>
+            <JFXTreeTableColumn fx:id="tableContentColumn" prefWidth="300" text="发送者"/>
         </columns>
     </JFXTreeTableView>
 

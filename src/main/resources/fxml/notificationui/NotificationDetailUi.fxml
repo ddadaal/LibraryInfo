@@ -14,7 +14,7 @@
         <Insets left="20" right="20" top="20" bottom="20"/>
     </padding>
 
-    <Label text="其他通知" textFill="#5e5e5e">
+    <Label text="通知" textFill="#5e5e5e">
         <font>
             <Font name="System Bold" size="32.0" />
         </font>

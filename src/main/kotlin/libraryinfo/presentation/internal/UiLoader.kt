@@ -3,7 +3,7 @@ package libraryinfo.presentation.internal
 import javafx.fxml.FXMLLoader
 import libraryinfo.Client
 
-class UiLoader<T: UiController>(location: String) {
+class UiLoader(location: String) {
     private val loader = FXMLLoader()
 
     init {
@@ -16,10 +16,11 @@ class UiLoader<T: UiController>(location: String) {
     }
 
 
-    val controller: T
-        get() = loader.getController<T>()
+    fun <T: UiController> getController(): T {
+        return loader.getController()
+    }
 
     fun loadAndGetElement(): UiElement {
-        return UiElement(loader.load(), controller)
+        return UiElement(loader.load(), getController())
     }
 }

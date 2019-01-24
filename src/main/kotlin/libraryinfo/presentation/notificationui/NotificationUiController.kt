@@ -8,19 +8,22 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.event.ActionEvent
 import libraryinfo.presentation.internal.*
-import libraryinfo.appservice.login.LoginAppService
 import libraryinfo.appservice.login.LoginAppServiceFactory
 import libraryinfo.util.DateHelper
 
 class NotificationUiController : UiController {
 
+    override fun load(): UiElement {
+        return doLoad("/fxml/notificationui/NotificationUi.fxml")
+    }
+
     lateinit var selectAllButton: JFXButton
     lateinit var notificationTable: JFXTreeTableView<NotificationModel>
     lateinit var tableDateColumn: JFXTreeTableColumn<NotificationModel, String>
-    lateinit var tableTypeColumn: JFXTreeTableColumn<NotificationModel, String>
     lateinit var tableIdColumn: JFXTreeTableColumn<NotificationModel, String>
     lateinit var readButton: JFXButton
     lateinit var tableSenderColumn: JFXTreeTableColumn<NotificationModel, String>
+    lateinit var tableContentColumn: JFXTreeTableColumn<NotificationModel, String>
 
     var notificationModels = FXCollections.observableArrayList<NotificationModel>()!!
 
@@ -30,20 +33,21 @@ class NotificationUiController : UiController {
     val selected: NotificationModel?
         get() = notificationTable.selectionModel.selectedItem?.value
 
+
     fun initialize() {
         initNotifyItem()
     }
 
-    fun updateItems(): Int {
+    fun updateItems() {
         notificationModels.clear()
         notificationModels.addAll(loginAppService.currentUser!!.unreadNotification.map { NotificationModel(it) })
-        return notificationModels.size
     }
 
     fun initNotifyItem() {
         tableDateColumn.setCellValueFactory { SimpleStringProperty(DateHelper.fromDate(it.value.value.notification.date)) }
         tableIdColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.id) }
         tableSenderColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.senderId) }
+        tableContentColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.content) }
 
         val root = RecursiveTreeItem(notificationModels) { it.children }
 
@@ -58,10 +62,10 @@ class NotificationUiController : UiController {
 
 
     fun onRefreshButtonClicked(actionEvent: ActionEvent) {
-        Globals.frameworkUiController.refreshNotificationStatus()
+        Globals.framework.refreshNotificationStatus()
     }
 
-    fun showNotSelectedDialog() {
+    private fun showNotSelectedDialog() {
         PromptDialogHelper.start("请选择一条通知！", "请选择一条通知！")
             .addCloseButton("好", "CHECK", null)
             .createAndShow()
@@ -74,14 +78,24 @@ class NotificationUiController : UiController {
     fun onReadButtonClicked(actionEvent: ActionEvent?) {
         val model = selected
         if (model != null) {
-            val uiElementPackage = NotificationDetailUiController().load()
-            val controller = uiElementPackage.getController<NotificationDetailUiController>()
+
+            val ui = NotificationDetailUiController().load()
+
+            val controller = ui.getController<NotificationDetailUiController>()
+
             controller.fillContent(model.notification)
 
-            controller.exitCallback = { this.updateItems() }
-            PromptDialogHelper.start("消息详细内容", "你选择了通知")
-                .setContent(uiElementPackage.component)
-                .createAndShow()
+
+            val dialog = PromptDialogHelper.start("消息详细内容", "你选择了通知")
+                .setContent(ui.component)
+                .create()
+
+            controller.exitCallback = {
+                dialog.close()
+                this.updateItems()
+            }
+
+            dialog.show()
         } else {
             showNotSelectedDialog()
         }
@@ -89,12 +103,4 @@ class NotificationUiController : UiController {
 
     }
 
-    /**
-     * Loads the controller.
-     *
-     * @return external loaded ui controller and component
-     */
-    override fun load(): UiElement {
-        return UiLoader<NotificationUiController>("/fxml/notificationui/NotificationUi.fxml").loadAndGetElement()
-    }
 }

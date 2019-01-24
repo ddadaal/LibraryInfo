@@ -8,29 +8,36 @@ import javafx.animation.Animation
 import javafx.animation.KeyFrame
 import javafx.animation.Timeline
 import javafx.application.Platform
+import javafx.beans.DefaultProperty
+import javafx.beans.NamedArg
+import javafx.collections.ListChangeListener
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
+import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
 import javafx.scene.Node
-import javafx.scene.Parent
+import javafx.scene.control.Button
 import javafx.scene.control.Label
-import javafx.scene.layout.GridPane
-import javafx.scene.layout.Pane
-import javafx.scene.layout.StackPane
+import javafx.scene.layout.*
 import javafx.scene.text.Text
 import javafx.stage.Stage
 import javafx.util.Duration
 import libraryinfo.presentation.helpui.*
 import libraryinfo.presentation.internal.Globals
 import libraryinfo.presentation.internal.UiController
-import libraryinfo.presentation.internal.UiElement
 import libraryinfo.presentation.notificationui.NotificationUiController
-import libraryinfo.appservice.login.LoginAppService
 import libraryinfo.appservice.login.LoginAppServiceFactory
+import libraryinfo.presentation.internal.UiElement
 import libraryinfo.util.DateHelper
 
-const val DEPTH = 3
+//@DefaultProperty("children")
+class Framework(
+    @NamedArg("functionButtons") var functionButtons: List<Button>
+): AnchorPane() {
 
-abstract class FrameworkUiController : UiController {
+
+    private val DEPTH = 3
+
     lateinit var dialogContainer: StackPane
     lateinit var drawer: GridPane
     lateinit var titleBar: GridPane
@@ -44,20 +51,32 @@ abstract class FrameworkUiController : UiController {
     lateinit var promptLabel: Label
     lateinit var titleText: Text
     lateinit var btnNotification: JFXButton
-    lateinit var btnDraft: JFXButton
     var subController: UiController? = null
+    lateinit var vboxFunctionButtons: VBox
+    var onSwitchBackToHome: EventHandler<ActionEvent>? = null
+    // function buttons
 
     private val loginAppService = LoginAppServiceFactory.service
 
+    init {
+        val loader = FXMLLoader(javaClass.getResource("/fxml/helpui/Framework.fxml"))
+        loader.setRoot(this)
+        loader.setController(this)
+
+        loader.load<Framework>()
+
+    }
+
+
     val dialogStack = DialogStack()
 
-    lateinit var notificationUiElement: UiElement
+    lateinit var notificationUi: UiElement
 
-    fun refreshNotificationStatus(): Int {
-        val controller = notificationUiElement.getController<NotificationUiController>()
-        val count = controller.updateItems()
-        btnNotification.text = String.format("通知（%d）", count)
-        return count
+    val notificationUiController
+        get() = notificationUi.getController<NotificationUiController>()
+
+    fun refreshNotificationStatus() {
+        notificationUiController.updateItems()
     }
 
     fun setStage(stage: Stage) {
@@ -84,21 +103,30 @@ abstract class FrameworkUiController : UiController {
         Globals.stage = stage
     }
 
-    open fun initialize() {
+    @FXML
+    private fun initialize() {
 
 
         val timeline = Timeline(
             KeyFrame(Duration.millis(1000.0),
-                EventHandler { event -> timeText.text = DateHelper.fromTimestamp(System.currentTimeMillis()) }
+                EventHandler { timeText.text = DateHelper.fromTimestamp(System.currentTimeMillis()) }
             )
         )
         timeline.cycleCount = Animation.INDEFINITE
         timeline.play()
-        switchBackToHome()
+        switchBackToHome(null)
 
         promptLabel.text = "欢迎你！" + loginAppService.currentUser?.name
 
-        notificationUiElement = NotificationUiController().load()
+        notificationUi = NotificationUiController().load()
+
+        notificationUiController.notificationModels.addListener( ListChangeListener {
+            btnNotification.text = "通知（${notificationUiController.notificationModels.size}）"
+        })
+
+        refreshNotificationStatus()
+
+        vboxFunctionButtons.children.addAll(functionButtons)
     }
 
 
@@ -109,7 +137,7 @@ abstract class FrameworkUiController : UiController {
 
     fun onNotificationFunctionButtonClicked(actionEvent: ActionEvent) {
         refreshNotificationStatus()
-        switchFunction(notificationUiElement, "通知", true)
+        switchFunction(notificationUi, "通知")
 
     }
 
@@ -122,70 +150,34 @@ abstract class FrameworkUiController : UiController {
         this.contentPane.children.add(spinner)
     }
 
-    /**
-     * 切换功能界面的方法。这个重载方法每次都会重新加载一个新的功能界面，以前的功能界面的状态将会被丢弃。
-     *
-     * @param clazz   对应功能界面的类对象
-     * @param title   标题名称
-     * @param refresh 如果新的UI界面和原来的界面是同一个界面的话，是否需要刷新。
-     */
-
-    fun switchFunction(clazz: Class<out UiController>, title: String, refresh: Boolean) {
-
-
+    fun switchFunction(uiElement: UiElement, title: String) {
         val thread = Thread {
             Platform.runLater { this.showLoadingAnimation() }
             Thread.sleep(200)
 
             Platform.runLater {
-                switchFunction(clazz.newInstance().load(), title, refresh)
+                subController?.onClose()
+
+                if (subController == null) {
+                    subController = uiElement.getController()
+
+                }
+
+                this.contentPane.children.clear()
+                this.contentPane.children.add(uiElement.component)
+                this.titleText.text = title
             }
+
         }
-        thread.uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
+        thread.uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { _, throwable -> throwable.printStackTrace()}
         thread.start()
-
-
     }
 
-    /**
-     * 另一种通过package切换界面的方法。这个方法允许用户自己维护原来的功能界面的状态。
-     *
-     * @param uiElementPackage package
-     * @param refresh   如果新的UI界面和原来的界面是同一个界面的话（通过controller是否一致来判断），是否需要刷新。
-     * @see .switchFunction
-     */
-
-    fun switchFunction(uiElementPackage: UiElement, title: String, refresh: Boolean) {
-        switchFunction(uiElementPackage.component, uiElementPackage.getController(), title, refresh)
-    }
-
-    /**
-     * 另一种通过package切换界面的方法。这个方法允许用户自己维护原来的功能界面的状态。
-     *
-     * @param parent     功能对象UI元素
-     * @param controller 控制器
-     * @see .switchFunction
-     */
-    fun switchFunction(parent: Parent, controller: UiController, title: String, refresh: Boolean) {
-
-        subController?.onClose()
-
-        if (refresh || subController == null) {
-            subController = controller
-            this.contentPane.children.clear()
-            this.contentPane.children.add(parent)
-            this.titleText.text = title
-        }
-    }
-
-    /**
-     * 增加一个HomeUiController后，重写这个方法做到退回主界面。
-     */
-    open fun switchBackToHome() {
-
+    fun switchBackToHome(actionEvent: ActionEvent?) {
+        onSwitchBackToHome?.handle(actionEvent)
     }
 
     fun onBtnAboutClicked(actionEvent: ActionEvent) {
-        switchFunction(AboutPageController::class.java, "关于", true)
+        switchFunction(AboutPageController().load(), "关于")
     }
 }

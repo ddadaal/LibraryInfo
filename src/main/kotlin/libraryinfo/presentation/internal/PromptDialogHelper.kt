@@ -59,7 +59,7 @@ class PromptDialogHelper(title: String, content: String) {
     fun addCloseButton(content: String, icon: Node, e: EventHandler<in MouseEvent>?): PromptDialogHelper {
         val button = JFXButton(content, icon)
         button.setOnMouseClicked { event ->
-            Globals.frameworkUiController.dialogStack.closeCurrentAndPopAndShowNext()
+            Globals.framework.dialogStack.closeCurrentAndPopAndShowNext()
             e?.handle(event)
         }
         buttonList.add(button)
@@ -97,7 +97,7 @@ class PromptDialogHelper(title: String, content: String) {
         return this
     }
 
-    fun create(container: StackPane = Globals.frameworkUiController.dialogContainer): JFXDialog {
+    fun create(container: StackPane = Globals.framework.dialogContainer): JFXDialog {
         val content = JFXDialogLayout()
         content.setHeading(titleText)
         content.setBody(contentNode)
@@ -108,7 +108,7 @@ class PromptDialogHelper(title: String, content: String) {
     }
 
     fun createAndShow() {
-        Globals.frameworkUiController.dialogStack.pushAndShow(create())
+        Globals.framework.dialogStack.pushAndShow(create())
     }
 
     companion object {

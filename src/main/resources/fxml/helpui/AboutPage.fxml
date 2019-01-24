@@ -6,17 +6,23 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<VBox prefHeight="800.0" prefWidth="800.0" maxHeight="2000" spacing="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="libraryinfo.presentation.helpui.AboutPageController">
+<VBox prefHeight="800.0"
+      prefWidth="800.0"
+      maxHeight="2000"
+      spacing="10"
+      xmlns="http://javafx.com/javafx/8.0.121"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="libraryinfo.presentation.helpui.AboutPageController">
     <padding>
         <Insets bottom="20" left="20" right="20" top="20" />
     </padding>
     <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="300.0" spacing="20">
-        <Label text="Light x00" textFill="#000000">
+        <Label text="LibraryInfo" textFill="#000000">
             <font>
                 <Font name="System Bold" size="42.0" />
             </font>
         </Label>
-        <Label text="进销存管理系统" textFill="#000000">
+        <Label text="图书管理系统" textFill="#000000">
             <font>
                 <Font size="18.0" />
             </font>
@@ -29,13 +35,13 @@
                     <Font size="16.0" />
                 </font>
             </Label>
-            <Label text="发布时间：2018/1/4">
+            <Label text="发布时间：2019/1/27">
                 <font>
                     <Font size="16.0" />
                 </font>
             </Label>
 
-            <Label onMouseClicked="#onRepositoryAddressClicked" text="仓库地址：http://101.37.19.32:10080/trap-x00/ERPnju">
+            <Label onMouseClicked="#onRepositoryAddressClicked" text="仓库地址：https://github.com/viccrubs/LibraryInfo">
                 <font>
                     <Font size="16.0" />
                 </font>

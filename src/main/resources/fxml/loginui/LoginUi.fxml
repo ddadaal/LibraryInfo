@@ -16,7 +16,7 @@
         </BorderPane.margin>
         <top>
             <VBox alignment="CENTER" prefHeight="60.0" prefWidth="300.0">
-                <Label text="Light x00" textFill="#000000">
+                <Label text="LibraryInfo" textFill="#000000">
                     <font>
                         <Font name="System Bold" size="42.0"/>
                     </font>
@@ -24,7 +24,7 @@
                         <Insets/>
                     </VBox.margin>
                 </Label>
-                <Label text="进销存管理系统" textFill="#000000">
+                <Label text="图书管理系统" textFill="#000000">
                     <VBox.margin>
                         <Insets left="120.0"/>
                     </VBox.margin>
