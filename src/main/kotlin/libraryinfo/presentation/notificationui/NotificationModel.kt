@@ -3,7 +3,7 @@ package libraryinfo.presentation.notificationui
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
-import libraryinfo.entity.notification.Notification
+import libraryinfo.domain.entity.notification.Notification
 
 class NotificationModel(
     var voObjectProperty: ObjectProperty<Notification>

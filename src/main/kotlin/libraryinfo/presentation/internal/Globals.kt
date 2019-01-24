@@ -2,7 +2,6 @@ package libraryinfo.presentation.internal
 
 import javafx.scene.Scene
 import javafx.stage.Stage
-import libraryinfo.entity.user.User
 import libraryinfo.presentation.mainui.FrameworkUiController
 import java.time.LocalDateTime
 

@@ -24,7 +24,8 @@ import libraryinfo.presentation.internal.Globals
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.presentation.notificationui.NotificationUiController
-import libraryinfo.service.LoginService
+import libraryinfo.appservice.login.LoginAppService
+import libraryinfo.appservice.login.LoginAppServiceFactory
 import libraryinfo.util.DateHelper
 
 const val DEPTH = 3
@@ -45,6 +46,8 @@ abstract class FrameworkUiController : UiController {
     lateinit var btnNotification: JFXButton
     lateinit var btnDraft: JFXButton
     var subController: UiController? = null
+
+    private val loginAppService = LoginAppServiceFactory.service
 
     val dialogStack = DialogStack()
 
@@ -93,7 +96,7 @@ abstract class FrameworkUiController : UiController {
         timeline.play()
         switchBackToHome()
 
-        promptLabel.text = "欢迎你！" + LoginService.currentUser?.name
+        promptLabel.text = "欢迎你！" + loginAppService.currentUser?.name
 
         notificationUiElement = NotificationUiController().load()
     }

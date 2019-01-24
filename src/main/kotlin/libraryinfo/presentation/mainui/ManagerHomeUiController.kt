@@ -1,19 +1,21 @@
 package libraryinfo.presentation.mainui
 
 import javafx.event.ActionEvent
-import libraryinfo.presentation.internal.Globals
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.presentation.internal.UiLoader
-import libraryinfo.service.LoginService
+import libraryinfo.appservice.login.LoginAppService
+import libraryinfo.appservice.login.LoginAppServiceFactory
 
 class ManagerHomeUiController : BaseHomepageUiController() {
+
+    private val loginAppService = LoginAppServiceFactory.service
 
     private val uiController
         get() = this.frameworkUiController as ManagerUiController
 
     fun initialize() {
         super.refresh()
-        textWelcome.text = "欢迎：总经理" + LoginService.currentUser?.name
+        textWelcome.text = "欢迎：总经理" + loginAppService.currentUser?.name
     }
 
     override fun load(): UiElement {

@@ -15,7 +15,8 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import libraryinfo.presentation.helpui.*
 import libraryinfo.presentation.internal.*
-import libraryinfo.service.LoginService
+import libraryinfo.appservice.login.LoginAppService
+import libraryinfo.appservice.login.LoginAppServiceFactory
 import java.time.LocalDateTime
 
 class LoginUiController : UiController {
@@ -25,6 +26,8 @@ class LoginUiController : UiController {
     lateinit var dialogContainer: StackPane
     lateinit var rootPane: BorderPane
     lateinit var loginButton: JFXButton
+
+    val loginAppService = LoginAppServiceFactory.service
 
     fun init(stage: Stage) {
         Globals.stage = stage
@@ -79,7 +82,7 @@ class LoginUiController : UiController {
 
                 val username = usernameField.text
 
-                if (LoginService.login(username, passwordField.text)) {
+                if (loginAppService.login(username, passwordField.text)) {
 
                     Globals.closeStage()
 
@@ -90,7 +93,7 @@ class LoginUiController : UiController {
 
                     val newStage = Stage()
 
-                    val uiElement = LoginService.currentUser!!.mainUiElement
+                    val uiElement = loginAppService.currentUser!!.mainUiElement
 
                     val scene = Scene(uiElement.component)
                     newStage.scene = scene

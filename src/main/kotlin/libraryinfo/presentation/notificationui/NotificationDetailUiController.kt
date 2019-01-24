@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXButton
 import com.jfoenix.controls.JFXTextArea
 import com.jfoenix.controls.JFXTextField
 import javafx.event.ActionEvent
-import libraryinfo.entity.notification.Notification
+import libraryinfo.domain.entity.notification.Notification
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.presentation.internal.UiLoader

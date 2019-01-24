@@ -8,7 +8,8 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.event.ActionEvent
 import libraryinfo.presentation.internal.*
-import libraryinfo.service.LoginService
+import libraryinfo.appservice.login.LoginAppService
+import libraryinfo.appservice.login.LoginAppServiceFactory
 import libraryinfo.util.DateHelper
 
 class NotificationUiController : UiController {
@@ -23,6 +24,9 @@ class NotificationUiController : UiController {
 
     var notificationModels = FXCollections.observableArrayList<NotificationModel>()!!
 
+    private val loginAppService = LoginAppServiceFactory.service
+
+
     val selected: NotificationModel?
         get() = notificationTable.selectionModel.selectedItem?.value
 
@@ -32,7 +36,7 @@ class NotificationUiController : UiController {
 
     fun updateItems(): Int {
         notificationModels.clear()
-        notificationModels.addAll(LoginService.currentUser!!.unreadNotification.map { NotificationModel(it) })
+        notificationModels.addAll(loginAppService.currentUser!!.unreadNotification.map { NotificationModel(it) })
         return notificationModels.size
     }
 
