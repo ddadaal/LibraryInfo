@@ -8,6 +8,7 @@ class DynamicUserManagementStrategy(
     var canCreate: Boolean,
     var canSearch: Boolean
 ): UserManagementStrategy {
+
     override fun searchUser(query: String): User? {
         if (!canSearch) {
             throw PermissionDeniedException()

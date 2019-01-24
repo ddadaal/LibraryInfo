@@ -9,22 +9,23 @@ import libraryinfo.presentation.internal.UiElement
 import libraryinfo.presentation.userui.UserUiController
 import java.time.Duration
 
-object UndergraduateType: UserType {
-    override val name: String
-        get() = "本科生"
-    override val borrowStrategy: BorrowStrategy
-        get() = object : BorrowStrategy {
-            override fun canBorrowBook(book: Book, duration: Duration): Boolean {
-                return true
-            }
+class UndergraduateType: UserType {
+
+    override val name: String = "本科生"
+
+    override val borrowStrategy = object : BorrowStrategy {
+        override fun canBorrowBook(book: Book, duration: Duration): Boolean {
+            return true
         }
-    override val userManagementStrategy: UserManagementStrategy
-        get() = DynamicUserManagementStrategy(false, false)
-    override val bookManagementStrategy: BookManagementStrategy
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    }
+
+    override val userManagementStrategy = DynamicUserManagementStrategy(false, false)
+
+    override val bookManagementStrategy: BookManagementStrategy = TODO()
+
     override val mainUiElement: UiElement
         get() = UserUiController().load()
-    override val isAdmin: Boolean
-        get() = false
+
+    override val isAdmin: Boolean = false
 
 }

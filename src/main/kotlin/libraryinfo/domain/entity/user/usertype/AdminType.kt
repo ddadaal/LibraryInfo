@@ -6,18 +6,19 @@ import libraryinfo.domain.entity.user.strategy.usermanagement.DynamicUserManagem
 import libraryinfo.domain.entity.user.strategy.usermanagement.UserManagementStrategy
 import libraryinfo.presentation.internal.UiElement
 
-object AdminType: UserType {
-    override val name: String
-        get() = "管理员"
-    override val borrowStrategy: BorrowStrategy
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-    override val userManagementStrategy: UserManagementStrategy
-        get() = DynamicUserManagementStrategy(true, true)
-    override val bookManagementStrategy: BookManagementStrategy
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+class AdminType: UserType {
+
+    override val name = "管理员"
+
+    override val borrowStrategy: BorrowStrategy = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+
+    override val userManagementStrategy = DynamicUserManagementStrategy(true, true)
+
+    override val bookManagementStrategy: BookManagementStrategy = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+
     override val mainUiElement: UiElement
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-    override val isAdmin: Boolean
-        get() = true
+
+    override val isAdmin: Boolean = true
 
 }

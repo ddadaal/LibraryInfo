@@ -20,7 +20,7 @@ class RepositoryTest {
                     "test",
                     "Test User",
                     "test",
-                    UndergraduateType,
+                    UndergraduateType(),
                     arrayListOf(
                         Notification(
                             LocalDateTime.now(),
