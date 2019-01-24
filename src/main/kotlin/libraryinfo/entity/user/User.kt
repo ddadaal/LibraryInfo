@@ -69,6 +69,11 @@ class User() : Serializable {
     }
 
     fun updateInformation() {
+
+        UserRepository.data
+            .filter { it.type.name == "管理员" }
+            .forEach { it.notify("$name 改了用户信息", this)}
+
         UserRepository.save()
     }
 

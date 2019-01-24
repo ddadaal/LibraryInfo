@@ -6,6 +6,7 @@ import libraryinfo.entity.user.strategy.borrow.BorrowStrategy
 import libraryinfo.entity.user.strategy.usermanagement.UserManagementStrategy
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.presentation.mainui.ManagerUiController
+import libraryinfo.presentation.userui.UserUiController
 import java.time.Duration
 
 object UndergraduateType: UserType {
@@ -22,6 +23,6 @@ object UndergraduateType: UserType {
     override val bookManagementStrategy: BookManagementStrategy
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
     override val mainUiElement: UiElement
-        get() = ManagerUiController().load()
+        get() = UserUiController().load()
 
 }
