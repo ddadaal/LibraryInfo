@@ -1,6 +1,8 @@
 package libraryinfo.presentation.userui
 
 import javafx.event.ActionEvent
+import libraryinfo.presentation.helpui.CRUDSampleController
+import libraryinfo.presentation.helpui.ModificationSampleController
 import libraryinfo.presentation.mainui.Framework
 import libraryinfo.presentation.mainui.MainUi
 import libraryinfo.presentation.userui.reader.TxtReaderUiController
@@ -23,6 +25,10 @@ class UserUiController: MainUi("/fxml/userui/UserUi.fxml") {
 
     fun onProfileClicked(actionEvent: ActionEvent) {
 
+    }
+
+    fun onTestClicked(actionEvent: ActionEvent) {
+        framework.switchFunction(CRUDSampleController().load(), "CRUD测试")
     }
 
 }

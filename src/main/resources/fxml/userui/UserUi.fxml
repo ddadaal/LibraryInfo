@@ -26,6 +26,12 @@
                 <MaterialIconView glyphName="ASSIGNMENT_TURNED_IN" glyphSize="24" fill="black"/>
             </graphic>
         </JFXButton>
+        <JFXButton onAction="#onTestClicked" prefHeight="60" prefWidth="200" text="CRUD测试"
+                   textFill="#000000">
+            <graphic>
+                <MaterialIconView glyphName="ASSIGNMENT_TURNED_IN" glyphSize="24" fill="black"/>
+            </graphic>
+        </JFXButton>
 
     </functionButtons>
 
