@@ -12,23 +12,20 @@ class UserUiController: MainUi("/fxml/userui/UserUi.fxml") {
     override lateinit var framework: Framework
 
     fun switchBackToHome() {
-        println("switched back to home")
+        framework.switchFunction(UserHomeUiController().load(), "主页")
     }
 
-    fun onLibraryClicked(actionEvent: ActionEvent) {
-        framework.switchFunction(TxtReaderUiController().load(), "阅读器")
+    fun onBrowseClicked(actionEvent: ActionEvent) {
+        framework.switchFunction(BookBrowseUiController().load(), "浏览图书")
     }
 
-    fun onBorrowClicked(actionEvent: ActionEvent) {
-
-    }
-
-    fun onProfileClicked(actionEvent: ActionEvent) {
+    fun onMyBookClicked(actionEvent: ActionEvent) {
+        framework.switchFunction(MyBookUiController().load(), "我的图书")
 
     }
 
-    fun onTestClicked(actionEvent: ActionEvent) {
-        framework.switchFunction(CRUDSampleController().load(), "CRUD测试")
+    fun onProfileManagementClicked(actionEvent: ActionEvent) {
+        framework.switchFunction(ProfileManagementUiController().load(), "管理个人信息")
     }
 
 }

@@ -16,8 +16,11 @@ import javafx.stage.StageStyle
 import libraryinfo.presentation.helpui.*
 import libraryinfo.presentation.internal.*
 import libraryinfo.appservice.login.LoginAppServiceFactory
+import libraryinfo.domain.entity.notification.Notification
 import libraryinfo.presentation.mainui.MainUi
+import libraryinfo.repository.user.UserRepository
 import java.time.LocalDateTime
+import java.util.*
 
 class LoginUiController : UiController {
     override fun load(): UiElement {
@@ -88,6 +91,12 @@ class LoginUiController : UiController {
 
                 if (loginAppService.login(username, passwordField.text)) {
 
+
+                    val user = loginAppService.currentUser!!
+
+                    user.notifications.add(Notification(LocalDateTime.now(), UUID.randomUUID(), "您已成功登录。"))
+                    UserRepository.save()
+
                     Globals.closeStage()
 
                     // login successful
@@ -97,7 +106,7 @@ class LoginUiController : UiController {
 
                     val newStage = Stage()
 
-                    val ui = loginAppService.currentUser!!.mainUiElement
+                    val ui = user.mainUiElement
 
                     val scene = Scene(ui.component)
                     newStage.scene = scene
@@ -108,6 +117,7 @@ class LoginUiController : UiController {
                     // init globals
                     Globals.frameworkUi = ui.getController<MainUi>()
                     Globals.framework.setStage(newStage)
+
 
 
                     newStage.show()

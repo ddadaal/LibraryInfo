@@ -20,19 +20,24 @@
            fx:controller="libraryinfo.presentation.userui.UserUiController"
 >
     <functionButtons>
-        <JFXButton prefHeight="60" prefWidth="200" text="审批单据"
+        <JFXButton onAction="#onBrowseClicked" prefHeight="60" prefWidth="200" text="浏览图书"
                    textFill="#000000">
             <graphic>
                 <MaterialIconView glyphName="ASSIGNMENT_TURNED_IN" glyphSize="24" fill="black"/>
             </graphic>
         </JFXButton>
-        <JFXButton onAction="#onTestClicked" prefHeight="60" prefWidth="200" text="CRUD测试"
+        <JFXButton onAction="#onMyBookClicked" prefHeight="60" prefWidth="200" text="我的图书"
                    textFill="#000000">
             <graphic>
                 <MaterialIconView glyphName="ASSIGNMENT_TURNED_IN" glyphSize="24" fill="black"/>
             </graphic>
         </JFXButton>
-
+        <JFXButton onAction="#onProfileManagementClicked" prefHeight="60" prefWidth="200" text="管理个人信息"
+                   textFill="#000000">
+            <graphic>
+                <MaterialIconView glyphName="ASSIGNMENT_TURNED_IN" glyphSize="24" fill="black"/>
+            </graphic>
+        </JFXButton>
     </functionButtons>
 
 </Framework>
