@@ -1,16 +1,15 @@
 package libraryinfo.domain.entity.user
 
-import libraryinfo.domain.entity.book.Book
 import libraryinfo.domain.entity.book.instance.BookInstance
 import libraryinfo.vo.borrowrecord.BorrowRecordVo
 import libraryinfo.domain.entity.notification.Notification
 import libraryinfo.domain.entity.user.usertype.UserType
 import libraryinfo.domain.exception.BorrowBookException
+import libraryinfo.domain.exception.PermissionDeniedException
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.repository.user.UserRepository
 import libraryinfo.vo.usermanagement.UserInfoVo
 import java.io.Serializable
-import java.time.Duration
 import java.time.LocalDateTime
 import java.util.*
 
@@ -64,22 +63,23 @@ class User() : Serializable, ProfileChangeObserver {
             val record = BorrowRecordVo(currentTime, bookInstance.id, type.borrowStrategy.maxDuration, null)
             borrowRecords.add(record)
 
-            bookInstance.borrowBook()
+            bookInstance.borrowBook(record.id)
             ownedBookInstances.add(bookInstance)
 
             UserRepository.save()
             return record.id
         }
-        else throw BorrowBookException()
+        else throw PermissionDeniedException()
 
     }
 
-    fun returnBook(instance: BookInstance) {
-        val record = borrowRecords.find { it.bookInstanceId == instance.id }
+    fun returnBook(bookInstance: BookInstance) {
+        val record = borrowRecords.find { it.bookInstanceId == bookInstance.id }
         if (record != null) {
             record.returnTime = LocalDateTime.now()
 
-            instance.returnBook()
+            bookInstance.returnBook()
+            ownedBookInstances.remove(bookInstance)
 
             UserRepository.save()
         }

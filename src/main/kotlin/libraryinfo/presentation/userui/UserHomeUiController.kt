@@ -2,7 +2,6 @@ package libraryinfo.presentation.userui
 
 import javafx.event.ActionEvent
 import javafx.scene.text.Text
-import jdk.nashorn.internal.objects.Global
 import libraryinfo.appservice.login.LoginAppServiceFactory
 import libraryinfo.presentation.internal.Globals
 import libraryinfo.presentation.internal.UiController
