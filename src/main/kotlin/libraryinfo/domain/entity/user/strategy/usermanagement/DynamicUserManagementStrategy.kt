@@ -16,13 +16,12 @@ class DynamicUserManagementStrategy(
         var canGenerateReport: Boolean = false,
         var canGeneratePayment: Boolean = false
 ) : UserManagementStrategy {
+
     override fun generateReport(userId: UUID): BorrowReportVo {
         if (!canGenerateReport) {
             throw PermissionDeniedException()
         }
-        return BorrowReportVo(
-                UserRepository.data.find { it.id == userId }!!.borrowRecords
-        )
+        return UserManagementDomainService.generateReport(userId)
 
 
     }
@@ -31,9 +30,7 @@ class DynamicUserManagementStrategy(
         if (!canGeneratePayment) {
             throw PermissionDeniedException()
         }
-        return PenaltyPaymentVo(
-                UserRepository.data.find { it.id == userId }!!.borrowRecords.filter { it.returnTime == null }
-        )
+        return UserManagementDomainService.generatePenaltyPayment(userId)
     }
 
 

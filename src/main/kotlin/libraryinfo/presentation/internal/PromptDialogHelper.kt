@@ -7,9 +7,12 @@ import com.jfoenix.controls.JFXTreeTableView
 import de.jensd.fx.glyphs.materialicons.MaterialIconView
 import javafx.event.EventHandler
 import javafx.scene.Node
+import javafx.scene.control.Label
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.AnchorPane
+import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
+import javafx.scene.layout.VBox
 import javafx.scene.text.Font
 import javafx.scene.text.Text
 
@@ -17,7 +20,7 @@ import java.util.ArrayList
 import java.util.Collections
 
 
-class PromptDialogHelper(title: String, content: String) {
+open class PromptDialogHelper(title: String, content: String) {
     private var titleText: Text? = null
     var contentNode: Node? = null
         private set
@@ -32,15 +35,19 @@ class PromptDialogHelper(title: String, content: String) {
     }
 
     fun addTable(table: JFXTreeTableView<*>): PromptDialogHelper {
-        val pane = AnchorPane()
-        pane.children.add(table)
-        AnchorPane.setTopAnchor(table, 24.0)
-        AnchorPane.setBottomAnchor(table, 24.0)
-        AnchorPane.setLeftAnchor(table, 24.0)
-        AnchorPane.setRightAnchor(table, 24.0)
-        contentNode = table
-        return this
+        return this.setContent(table)
     }
+
+    fun addVBox(vBox: VBox): PromptDialogHelper {
+        vBox.spacing = 15.0
+        vBox.children.forEach {
+            val hBox = it as HBox
+            hBox.spacing = 20.0
+            (hBox.children.find { x -> x is Label } as Label).minWidth = 50.0
+        }
+        return this.setContent(vBox)
+    }
+
 
     fun getTitleText(): Text? {
         return titleText
@@ -117,4 +124,6 @@ class PromptDialogHelper(title: String, content: String) {
             return PromptDialogHelper(title, content)
         }
     }
+
+
 }

@@ -46,7 +46,7 @@
             <Insets right="10.0" />
         </padding>
     </HBox>
-    <JFXTreeTableView fx:id="tableUser" prefHeight="500.0" prefWidth="800.0">
+    <JFXTreeTableView fx:id="tableUsers" prefHeight="500.0" prefWidth="800.0">
         <columns>
             <JFXTreeTableColumn fx:id="tcId" prefWidth="200" text="编号" />
             <JFXTreeTableColumn fx:id="tcName" editable="false" prefWidth="150" text="姓名" />
