@@ -14,7 +14,7 @@ class AdminType : UserType {
 
     override val borrowStrategy: BorrowStrategy = NoBorrowStrategy()
 
-    override val userManagementStrategy = DynamicUserManagementStrategy(true, true)
+    override val userManagementStrategy = DynamicUserManagementStrategy(true, true,true,true)
 
     override val bookManagementStrategy: BookManagementStrategy = AdminBookManagementStrategy()
 

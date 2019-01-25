@@ -12,13 +12,13 @@ import libraryinfo.presentation.userui.UserUiController
 import libraryinfo.vo.bookmanagement.BookInfoVo
 import java.time.Duration
 
-class UndergraduateType: UserType {
+class UndergraduateType : UserType {
 
     override val name: String = "本科生"
 
     override val borrowStrategy = UndergraduateBorrowStrategy()
 
-    override val userManagementStrategy = DynamicUserManagementStrategy(false, false)
+    override val userManagementStrategy = DynamicUserManagementStrategy()
 
     override val bookManagementStrategy: BookManagementStrategy = NoBookManagementStrategy()
 

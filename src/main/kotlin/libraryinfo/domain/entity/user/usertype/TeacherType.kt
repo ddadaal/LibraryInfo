@@ -14,7 +14,7 @@ class TeacherType : UserType {
 
     override val borrowStrategy: BorrowStrategy
         get() = TeacherBorrowStrategy()
-    override val userManagementStrategy = DynamicUserManagementStrategy(false, false)
+    override val userManagementStrategy = DynamicUserManagementStrategy()
 
     override val bookManagementStrategy: BookManagementStrategy = NoBookManagementStrategy()
 
