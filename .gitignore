@@ -27,3 +27,6 @@ target/
 **/out/*
 **/target/*
 **/build/*
+
+# astah lock
+*.lock

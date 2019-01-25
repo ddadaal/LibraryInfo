@@ -28,6 +28,8 @@ class Client : Application() {
      * primary stages and will not be embedded in the browser.
      */
     override fun start(primaryStage: Stage) {
+
+
         primaryStage.initStyle(StageStyle.UNDECORATED)
 
         val loader = FXMLLoader()

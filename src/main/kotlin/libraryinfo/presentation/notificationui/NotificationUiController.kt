@@ -46,7 +46,7 @@ class NotificationUiController : UiController {
     fun initNotifyItem() {
         tableDateColumn.setCellValueFactory { SimpleStringProperty(DateHelper.fromDate(it.value.value.notification.date)) }
         tableIdColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.id.toString().substring(0,6)) }
-        tableSenderColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.senderId.toString().substring(0,6)) }
+        tableSenderColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.sender.name) }
         tableContentColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.content) }
 
         val root = RecursiveTreeItem(notificationModels) { it.children }

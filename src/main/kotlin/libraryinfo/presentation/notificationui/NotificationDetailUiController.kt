@@ -28,7 +28,7 @@ class NotificationDetailUiController : UiController {
 
     fun fillContent(notification: Notification) {
         this.tfId.text = notification.id.toString()
-        this.tfSender.text = notification.senderId.toString()
+        this.tfSender.text = notification.sender.name
         this.tfDate.text = DateHelper.fromDate(notification.date)
         this.taContent.text = notification.content
         this.notification = notification

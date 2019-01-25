@@ -17,6 +17,7 @@ import libraryinfo.presentation.helpui.*
 import libraryinfo.presentation.internal.*
 import libraryinfo.appservice.login.LoginAppServiceFactory
 import libraryinfo.domain.entity.notification.Notification
+import libraryinfo.domain.service.systeminit.SystemInitDomainService
 import libraryinfo.presentation.mainui.MainUi
 import libraryinfo.repository.user.UserRepository
 import java.time.LocalDateTime
@@ -40,6 +41,8 @@ class LoginUiController : UiController {
         Globals.stage = stage
         makeDraggable(stage, rootPane)
         makeResizeable(stage)
+
+        SystemInitDomainService.init()
     }
 
     fun initialize() {
@@ -94,7 +97,7 @@ class LoginUiController : UiController {
 
                     val user = loginAppService.currentUser!!
 
-                    user.notifications.add(Notification(LocalDateTime.now(), UUID.randomUUID(), "您已成功登录。"))
+                    user.notifications.add(Notification(LocalDateTime.now(), SystemInitDomainService.SYS_USER.id, "您已成功登录。"))
                     UserRepository.save()
 
                     Globals.closeStage()

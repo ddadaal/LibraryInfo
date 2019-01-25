@@ -35,6 +35,8 @@ class User() : Serializable, ProfileChangeObserver {
     val unreadNotification: List<Notification>
         get() = notifications.filter { !it.read }
 
+
+
     constructor(
             id: UUID,
             username: String,
@@ -99,6 +101,19 @@ class User() : Serializable, ProfileChangeObserver {
     override fun onProfileChange(user: User, time: LocalDateTime) {
         this.notifications.add(Notification(LocalDateTime.now(), user.id, "${user.name}改了用户信息"))
         UserRepository.save()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is User) return false
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
     }
 
     val isAdmin: Boolean
