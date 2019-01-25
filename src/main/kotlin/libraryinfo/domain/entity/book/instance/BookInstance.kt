@@ -3,16 +3,17 @@ package libraryinfo.domain.entity.book.instance
 import libraryinfo.domain.entity.book.Book
 import libraryinfo.repository.book.BookRepository
 import java.io.Serializable
+import java.util.*
 
 class BookInstance(): Serializable {
-    lateinit var id: String
-    lateinit var bookId: String
+    lateinit var id: UUID
+    lateinit var bookId: UUID
 
     val book: Book
         get() = BookRepository.data.find { it.id == bookId }!!
 
 
-    constructor(id: String, bookId: String): this() {
+    constructor(id: UUID, bookId: UUID): this() {
         this.id = id
         this.bookId = bookId
     }

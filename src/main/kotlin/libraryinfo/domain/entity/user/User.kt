@@ -12,12 +12,13 @@ import libraryinfo.vo.usermanagement.UserInfoVo
 import java.io.Serializable
 import java.time.Duration
 import java.time.LocalDateTime
+import java.util.*
 
 
 class User() : Serializable, ProfileChangeObserver {
 
 
-    lateinit var id: String
+    lateinit var id: UUID
     lateinit var username: String
     lateinit var name: String
     lateinit var password: String
@@ -35,7 +36,7 @@ class User() : Serializable, ProfileChangeObserver {
         get() = notifications.filter { !it.read }
 
     constructor(
-            id: String,
+            id: UUID,
             username: String,
             name: String,
             password: String,

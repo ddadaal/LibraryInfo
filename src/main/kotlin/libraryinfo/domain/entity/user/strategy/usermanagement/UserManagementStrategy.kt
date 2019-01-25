@@ -5,6 +5,6 @@ import libraryinfo.vo.usermanagement.UserCreationVo
 import java.io.Serializable
 
 interface UserManagementStrategy: Serializable {
-    fun searchUser(query: String): User?
+    fun searchUser(query: String): List<User>
     fun createUser(info: UserCreationVo)
 }

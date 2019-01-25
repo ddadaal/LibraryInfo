@@ -3,15 +3,16 @@ package libraryinfo.domain.service.usermanagement
 import libraryinfo.domain.entity.user.User
 import libraryinfo.repository.user.UserRepository
 import libraryinfo.vo.usermanagement.UserCreationVo
+import java.util.*
 
 object UserManagementDomainService {
-    fun searchUser(query: String): User? {
-        return UserRepository.data.find { it.name ==query ||it.username ==query || it.id == query }
+    fun searchUser(query: String): List<User> {
+        return UserRepository.data.filter { it.name ==query ||it.username ==query || it.id.toString().contains(query) }
     }
 
     fun createUser(info: UserCreationVo) {
         UserRepository.data.add(User(
-                ((UserRepository.data.size +1).toString()),
+                UUID.randomUUID(),
                 info.username,
                 info.username,
                 info.password,

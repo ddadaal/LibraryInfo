@@ -6,16 +6,17 @@ import libraryinfo.domain.exception.NoMoreInstanceException
 import libraryinfo.repository.book.BookRepository
 import libraryinfo.vo.bookmanagement.BookInfoVo
 import java.io.Serializable
+import java.util.*
 
 class Book(): Serializable {
-    lateinit var id: String
+    lateinit var id: UUID
     lateinit var name: String
     lateinit var category: String
     lateinit var availableDocs: ArrayList<Doc>
 
     lateinit var instances: ArrayList<BookInstance>
 
-    constructor(id: String, name: String, category: String, availableDocs: ArrayList<Doc>, instances: ArrayList<BookInstance>): this() {
+    constructor(id: UUID, name: String, category: String, availableDocs: ArrayList<Doc>, instances: ArrayList<BookInstance>): this() {
         this.id = id
         this.name = name
         this.category = category
@@ -37,6 +38,7 @@ class Book(): Serializable {
     fun edit(info: BookInfoVo){
         this.category = info.category
         this.name = info.name
+        this.availableDocs.clear()
         this.availableDocs.addAll(info.availableDocs)
     }
 

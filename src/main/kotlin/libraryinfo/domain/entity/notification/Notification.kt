@@ -7,17 +7,17 @@ import java.util.*
 
 
 class Notification() : Serializable {
-    lateinit var id: String
+    lateinit var id: UUID
     var read: Boolean = false
     lateinit var date: LocalDateTime
-    lateinit var senderId: String
+    lateinit var senderId: UUID
     lateinit var content: String
 
-    constructor(date: LocalDateTime, senderId: String, content: String) : this() {
+    constructor(date: LocalDateTime, senderId: UUID, content: String) : this() {
         this.date = date
         this.senderId = senderId
         this.content = content
-        this.id = UUID.randomUUID().toString()
+        this.id = UUID.randomUUID()
     }
 
     fun read() {

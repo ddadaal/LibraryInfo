@@ -5,7 +5,7 @@ import libraryinfo.domain.service.usermanagement.UserManagementDomainService
 import libraryinfo.vo.usermanagement.UserCreationVo
 
 class UserManagementAppServiceImpl: UserManagementAppService {
-    override fun searchUser(query: String): User? {
+    override fun searchUser(query: String): List<User> {
         return UserManagementDomainService.searchUser(query)
     }
 
