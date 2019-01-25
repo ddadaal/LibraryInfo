@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<?import libraryinfo.presentation.mainui.Framework?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import com.jfoenix.controls.JFXButton?>
+<Framework xmlns:fx="http://javafx.com/fxml"
+           fx:id="framework"
+           onSwitchBackToHome="#switchBackToHome"
+           fx:controller="libraryinfo.presentation.adminui.AdminUiController"
+>
+    <functionButtons>
+        <JFXButton onAction="#onBookManagementClicked" prefHeight="60" prefWidth="200" text="图书管理"
+                   textFill="#000000">
+            <graphic>
+                <MaterialIconView glyphName="ASSIGNMENT_TURNED_IN" glyphSize="24" fill="black"/>
+            </graphic>
+        </JFXButton>
+        <JFXButton onAction="#onUserManagementClicked" prefHeight="60" prefWidth="200" text="用户管理"
+                   textFill="#000000">
+            <graphic>
+                <MaterialIconView glyphName="ASSIGNMENT_TURNED_IN" glyphSize="24" fill="black"/>
+            </graphic>
+        </JFXButton>
+    </functionButtons>
+</Framework>
