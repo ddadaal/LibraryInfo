@@ -45,8 +45,8 @@ class NotificationUiController : UiController {
 
     fun initNotifyItem() {
         tableDateColumn.setCellValueFactory { SimpleStringProperty(DateHelper.fromDate(it.value.value.notification.date)) }
-        tableIdColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.id.toString()) }
-        tableSenderColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.senderId.toString()) }
+        tableIdColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.id.toString().substring(0,6)) }
+        tableSenderColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.senderId.toString().substring(0,6)) }
         tableContentColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.content) }
 
         val root = RecursiveTreeItem(notificationModels) { it.children }
@@ -69,10 +69,6 @@ class NotificationUiController : UiController {
         PromptDialogHelper.start("请选择一条通知！", "请选择一条通知！")
             .addCloseButton("好", "CHECK", null)
             .createAndShow()
-    }
-
-    fun deleteItem(index: Int) {
-        updateItems()
     }
 
     fun onReadButtonClicked(actionEvent: ActionEvent?) {

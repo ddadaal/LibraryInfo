@@ -26,19 +26,16 @@ class AboutPageController : UiController {
     fun onRepositoryAddressClicked(mouseEvent: MouseEvent) {
         if (Desktop.isDesktopSupported()) {
             try {
-                Desktop.getDesktop().browse(URI("http://101.37.19.32:10080/trap-x00/ERPnju"))
-            } catch (e: IOException) {
-                e.printStackTrace()
-            } catch (e: URISyntaxException) {
+                Desktop.getDesktop().browse(URI("http://github.com/viccrubs/LibraryInfo"))
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
-
         }
     }
 
     fun initialize() {
 
-        licenseText = "Copyright (c) 2018, Trap x00\n" +
+        licenseText = "Copyright (c) 2019, Trap x00\n" +
                 "All rights reserved.\n" +
                 "\n" +
                 "Redistribution and use in source and binary forms, with or without\n" +

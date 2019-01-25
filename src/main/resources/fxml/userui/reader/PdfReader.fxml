@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="libraryinfo.presentation.userui.reader.PDFReaderUiController"
+      prefHeight="400.0" prefWidth="600.0"
+      spacing="30" alignment="TOP_CENTER"
+>
+    <Label>PDF阅读器</Label>
+    <Separator/>
+    <Label>PDF文件路径：</Label>
+    <Label fx:id="labelPath"/>
+    <JFXButton
+            onAction="#onBtnOpenClicked" text="打开默认浏览器以浏览PDF文档"/>
+</VBox>

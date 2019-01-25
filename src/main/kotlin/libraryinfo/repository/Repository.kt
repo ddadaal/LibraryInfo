@@ -1,6 +1,7 @@
 package libraryinfo.repository
 
 import java.io.*
+import java.lang.Exception
 
 
 abstract class Repository<T : Serializable>(
@@ -21,7 +22,7 @@ abstract class Repository<T : Serializable>(
                         val obj = objIn.readObject() as T
                         obj
                     }
-                } catch (e: EOFException) {
+                } catch (e: Exception) {
                     save(defaultValue)
                     defaultValue
                 }

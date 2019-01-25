@@ -55,17 +55,18 @@ class User() : Serializable, ProfileChangeObserver {
         this.ownedBookInstances = ownedBookInstances
     }
 
-    fun borrowBook(bookInstance: BookInstance, duration: Duration) {
-        if (type.borrowStrategy.canBorrowBook(bookInstance.book, duration)) {
+    fun borrowBook(bookInstance: BookInstance): UUID {
+        if (type.borrowStrategy.canBorrowBook(bookInstance.book)) {
 
             val currentTime = LocalDateTime.now()
-            val record = BorrowRecordVo(currentTime, bookInstance.id, duration, null)
+            val record = BorrowRecordVo(currentTime, bookInstance.id, type.borrowStrategy.maxDuration, null)
             borrowRecords.add(record)
 
             bookInstance.borrowBook()
             ownedBookInstances.add(bookInstance)
 
             UserRepository.save()
+            return record.id
         }
         else throw BorrowBookException()
 
