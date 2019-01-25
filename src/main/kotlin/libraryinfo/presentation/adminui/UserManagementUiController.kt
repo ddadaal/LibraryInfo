@@ -1,5 +1,6 @@
 package libraryinfo.presentation.adminui
 
+import com.jfoenix.controls.JFXTextField
 import com.jfoenix.controls.JFXTreeTableColumn
 import com.jfoenix.controls.JFXTreeTableView
 import com.jfoenix.controls.RecursiveTreeItem
@@ -8,6 +9,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.scene.control.SelectionMode
+import javafx.scene.input.KeyCode
 import libraryinfo.appservice.usermanagement.UserManagementAppServiceFactory
 import libraryinfo.domain.entity.user.User
 import libraryinfo.presentation.internal.PromptDialogHelper
@@ -30,6 +32,7 @@ class UserManagementUiController : UiController {
     lateinit var tcName: JFXTreeTableColumn<UserModel, String>
     lateinit var tcType: JFXTreeTableColumn<UserModel, String>
     lateinit var tcUsername: JFXTreeTableColumn<UserModel, String>
+    lateinit var tfSearch: JFXTextField
 
     private val users: ObservableList<UserModel> = FXCollections.observableArrayList()
     private val userManagementService = UserManagementAppServiceFactory.service
@@ -67,7 +70,7 @@ class UserManagementUiController : UiController {
     fun onReportButtonClicked() {
         val user = selected
         if (user != null) {
-            PromptDialogHelper("借书记录","")
+            PromptDialogHelper("借书记录", "")
                     .setContent(ReadOnlyPairTableHelper.start().addPair("key", "value").create())
                     .createAndShow()
         }
@@ -84,11 +87,19 @@ class UserManagementUiController : UiController {
     }
 
     private fun updateItems() {
+        val query = tfSearch.text
         users.clear()
-        UserRepository.data.forEach { users.add(UserModel(it)) }
+        UserRepository.data
+                .filter { it.name.contains(query) || it.username.contains(query) }
+                .forEach { users.add(UserModel(it)) }
     }
 
     private fun initTable() {
+        tfSearch.setOnKeyPressed { event ->
+            if (event.code == KeyCode.ENTER) {
+                updateItems()
+            }
+        }
         tcId.setCellValueFactory { SimpleStringProperty(it.value.value.idProperty.get().substring(0, 6)) }
         tcName.setCellValueFactory { it.value.value.nameProperty }
         tcUsername.setCellValueFactory { it.value.value.usernameProperty }

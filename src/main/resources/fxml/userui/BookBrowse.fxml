@@ -1,71 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.Font?>
-<?import javafx.geometry.Insets?>
-<?import com.jfoenix.controls.JFXMasonryPane?>
 <?import com.jfoenix.controls.JFXButton?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXComboBox?>
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
-<?import com.jfoenix.controls.JFXTreeTableColumn?>
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="libraryinfo.presentation.userui.BookBrowseUiController"
-      prefHeight="400.0" prefWidth="600.0">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="libraryinfo.presentation.userui.BookBrowseUiController">
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
-    <HBox alignment="CENTER_LEFT" maxWidth="2000">
-        <FontAwesomeIconView fill="black" glyphName="ADDRESS_CARD" glyphSize="22" />
-        <Text text="搜索">
-            <font>
-                <Font size="20.0" />
-            </font></Text>
-        <padding>
-            <Insets right="10.0" />
-        </padding>
-    </HBox>
-
-    <JFXMasonryPane prefHeight="200.0" prefWidth="780.0">
-        <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-        </padding>
-        <StackPane alignment="CENTER_LEFT" maxHeight="30">
-            <JFXTextField fx:id="tfSearch" labelFloat="true" maxWidth="150.0" prefWidth="150.0" promptText="查找，回车进行查找" />
-            <padding>
-                <Insets left="20.0" right="10.0" />
-            </padding>
-        </StackPane>
-    </JFXMasonryPane>
-    <HBox alignment="CENTER_LEFT" maxWidth="2000">
-        <MaterialIconView glyphName="ACCOUNT_BOX" glyphSize="28" />
-        <Text text="现有书信息">
-            <font>
-                <Font size="20.0" />
-            </font></Text>
-        <padding>
-            <Insets right="10.0" />
-        </padding>
-    </HBox>
-    <JFXTreeTableView fx:id="tableBooks" prefHeight="500.0" prefWidth="800.0">
-        <columns>
-            <JFXTreeTableColumn fx:id="tcId" prefWidth="200" text="ID" />
-            <JFXTreeTableColumn fx:id="tcName" editable="false" prefWidth="150" text="书名" />
-            <JFXTreeTableColumn fx:id="tcCategory" prefWidth="150" text="类别" />
-            <JFXTreeTableColumn fx:id="tcInstanceRemaining" prefWidth="150" text="剩余数量" />
-            <JFXTreeTableColumn fx:id="tcFormat" prefWidth="150" text="在线阅读可用格式" />
-
-        </columns>
-    </JFXTreeTableView>
+    <HBox fx:id="container" />
     <HBox alignment="CENTER_LEFT" maxHeight="60.0" maxWidth="2000.0" prefHeight="60.0" prefWidth="600.0">
         <padding>
             <Insets bottom="10" right="20" top="10" />
@@ -94,5 +39,11 @@
                 <Insets right="10.0" />
             </HBox.margin>
         </JFXButton>
+      <VBox.margin>
+         <Insets left="10.0" />
+      </VBox.margin>
     </HBox>
+    <padding>
+        <Insets bottom="10" left="10" right="10" top="10" />
+    </padding>
 </VBox>
