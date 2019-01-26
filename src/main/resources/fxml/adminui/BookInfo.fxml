@@ -18,7 +18,7 @@
             <JFXTextField fx:id="nameInput" />
         </HBox>
         <HBox>
-            <Label prefWidth="50.0" text="目录" />
+            <Label prefWidth="50.0" text="类别" />
             <JFXTextField fx:id="categoryInput" />
         </HBox>
         <padding>

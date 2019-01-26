@@ -1,20 +1,22 @@
 package libraryinfo.domain.service.systeminit
 
 import libraryinfo.domain.entity.user.User
-import libraryinfo.domain.entity.user.usertype.AdminType
-import libraryinfo.domain.entity.user.usertype.SystemType
+import libraryinfo.domain.entity.user.role.UserRole
+import libraryinfo.domain.entity.user.userprivilege.SystemPrivilege
 import libraryinfo.repository.user.UserRepository
+import libraryinfo.util.Id
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 object SystemInitDomainService {
     val SYS_USER = User(
-        UUID.fromString("4ca39b0b-1d31-49c0-b00b-cabbf7f8cacf"),
+        Id("4ca39b0b-1d31-49c0-b00b-cabbf7f8cacf"),
         "SYS_USER",
         "系统",
+        UserRole.System,
         UUID.randomUUID().toString(),
-        SystemType(),
+        SystemPrivilege(),
         ArrayList(),
         ArrayList(),
         ArrayList()
@@ -35,9 +37,9 @@ object SystemInitDomainService {
     }
 
     private fun registerProfileChange() {
-        val admins = UserRepository.data.filter { it.isAdmin }
+        val admins = UserRepository.data.filter { it.role == UserRole.Admin }
 
-        UserRepository.data.filter { !it.isAdmin }.forEach { user ->
+        UserRepository.data.filter { it.role != UserRole.Admin }.forEach { user ->
             admins.forEach { admin ->
                 user.registerProfileChange(admin)
             }

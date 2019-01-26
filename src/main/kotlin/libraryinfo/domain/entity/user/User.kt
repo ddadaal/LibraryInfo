@@ -1,38 +1,36 @@
 package libraryinfo.domain.entity.user
 
 import libraryinfo.domain.entity.book.instance.BookInstance
-import libraryinfo.vo.borrowrecord.BorrowRecordVo
 import libraryinfo.domain.entity.notification.Notification
-import libraryinfo.domain.entity.user.usertype.UserType
+import libraryinfo.domain.entity.user.role.UserRole
+import libraryinfo.domain.entity.user.userprivilege.UserPrivilege
 import libraryinfo.domain.exception.PermissionDeniedException
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.repository.book.BookRepository
 import libraryinfo.repository.user.UserRepository
+import libraryinfo.util.Id
+import libraryinfo.vo.borrowrecord.BorrowRecordVo
 import libraryinfo.vo.usermanagement.UserEditVo
+import java.io.IOException
 import java.io.Serializable
 import java.time.LocalDateTime
-import java.util.*
-import java.io.IOException
-import kotlin.collections.ArrayList
 
 
 class User() : Serializable, ProfileChangeObserver {
 
 
-    lateinit var id: UUID
+    lateinit var id: Id
     lateinit var username: String
     lateinit var name: String
+    lateinit var role: UserRole
     lateinit var password: String
-    lateinit var type: UserType
+    lateinit var privilege: UserPrivilege
     lateinit var notifications: ArrayList<Notification>
-    lateinit var ownedBookInstanceIds: ArrayList<UUID>
+    lateinit var ownedBookInstanceIds: ArrayList<Id>
     lateinit var borrowRecords: ArrayList<BorrowRecordVo>
 
     @Transient
     private var profileChangeObservers = ArrayList<ProfileChangeObserver>()
-
-    val mainUiElement: UiElement
-        get() = type.mainUiElement
 
     val unreadNotification: List<Notification>
         get() = notifications.filter { !it.read }
@@ -48,20 +46,22 @@ class User() : Serializable, ProfileChangeObserver {
 
 
     constructor(
-            id: UUID,
-            username: String,
-            name: String,
-            password: String,
-            type: UserType,
-            notifications: ArrayList<Notification>,
-            borrowRecords: ArrayList<BorrowRecordVo>,
-            ownedBookInstanceIds: ArrayList<UUID>
+        id: Id,
+        username: String,
+        name: String,
+        role: UserRole,
+        password: String,
+        privilege: UserPrivilege,
+        notifications: ArrayList<Notification>,
+        borrowRecords: ArrayList<BorrowRecordVo>,
+        ownedBookInstanceIds: ArrayList<Id>
     ) : this() {
         this.username = username
         this.id = id
         this.name = name
+        this.role = role
         this.password = password
-        this.type = type
+        this.privilege = privilege
         this.notifications = notifications
         this.borrowRecords = borrowRecords
         this.ownedBookInstanceIds = ownedBookInstanceIds
@@ -70,14 +70,15 @@ class User() : Serializable, ProfileChangeObserver {
     @Throws(IOException::class, ClassNotFoundException::class)
     private fun readObject(`in`: java.io.ObjectInputStream) {
         `in`.defaultReadObject()
-        profileChangeObservers = ArrayList<ProfileChangeObserver>()
+        profileChangeObservers = ArrayList()
     }
 
-    fun borrowBook(bookInstance: BookInstance): UUID {
-        if (type.borrowStrategy.canBorrowBook(bookInstance.book)) {
+    fun borrowBook(bookInstance: BookInstance): Id {
+        val borrowability = privilege.borrowPrivilege.judgeBookBorrowability(this, bookInstance.book)
+        if (borrowability.canBorrow) {
 
             val currentTime = LocalDateTime.now()
-            val record = BorrowRecordVo(currentTime, bookInstance.id, type.borrowStrategy.maxDuration, null)
+            val record = BorrowRecordVo(currentTime, bookInstance.id, privilege.borrowPrivilege.maxDuration, null)
             borrowRecords.add(record)
 
             bookInstance.borrowBook(record.id)
@@ -86,7 +87,7 @@ class User() : Serializable, ProfileChangeObserver {
             UserRepository.save()
             return record.id
         }
-        else throw PermissionDeniedException()
+        else throw PermissionDeniedException(borrowability.error)
 
     }
 
@@ -105,7 +106,8 @@ class User() : Serializable, ProfileChangeObserver {
     fun updateInformation(info: UserEditVo) {
         this.name = info.name
         this.password = info.password
-        this.type = info.type
+        this.privilege = info.rolePreset.getPrivilege()
+        this.role = info.rolePreset.role
         val time = LocalDateTime.now()
         profileChangeObservers.forEach { it.onProfileChange(this, time) }
 
@@ -116,8 +118,12 @@ class User() : Serializable, ProfileChangeObserver {
         profileChangeObservers.add(observer)
     }
 
+    fun notify(sender: User, content: String) {
+        this.notifications.add(Notification(LocalDateTime.now(), sender.id, content))
+    }
+
     override fun onProfileChange(user: User, time: LocalDateTime) {
-        this.notifications.add(Notification(LocalDateTime.now(), user.id, "${user.name}改了用户信息"))
+        notify(user, "${user.name}改了用户信息")
         UserRepository.save()
     }
 
@@ -133,8 +139,5 @@ class User() : Serializable, ProfileChangeObserver {
     override fun hashCode(): Int {
         return id.hashCode()
     }
-
-    val isAdmin: Boolean
-        get() = type.isAdmin
 
 }

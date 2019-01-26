@@ -5,26 +5,26 @@ import com.jfoenix.controls.JFXTreeTableColumn
 import com.jfoenix.controls.JFXTreeTableView
 import com.jfoenix.controls.RecursiveTreeItem
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject
+import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.scene.control.SelectionMode
 import javafx.scene.input.KeyCode
-import libraryinfo.appservice.usermanagement.UserManagementAppServiceFactory
 import libraryinfo.domain.entity.user.User
 import libraryinfo.domain.service.systeminit.SystemInitDomainService
+import libraryinfo.domain.service.usermanagement.UserManagementDomainService
 import libraryinfo.presentation.internal.PromptDialogHelper
-import libraryinfo.presentation.internal.ReadOnlyPairTableHelper
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.presentation.userui.BorrowRecordTableUiController
 import libraryinfo.repository.user.UserRepository
 
 class UserModel(val user: User) : RecursiveTreeObject<UserModel>() {
-    val idProperty = SimpleStringProperty(user.id.toString())
+    val idProperty = SimpleObjectProperty(user.id)
     val nameProperty = SimpleStringProperty(user.name)
     val usernameProperty = SimpleStringProperty(user.username)
-    val typeProperty = SimpleStringProperty(user.type.name)
+    val typeProperty = SimpleStringProperty(user.role.name)
 }
 
 class UserManagementUiController : UiController {
@@ -37,7 +37,6 @@ class UserManagementUiController : UiController {
     lateinit var tfSearch: JFXTextField
 
     private val users: ObservableList<UserModel> = FXCollections.observableArrayList()
-    private val userManagementService = UserManagementAppServiceFactory.service
 
     private val selected: User?
         get() {
@@ -90,14 +89,12 @@ class UserManagementUiController : UiController {
         val user = selected
         if (user != null) {
             var content = ""
-            print(user.id)
-            val report = userManagementService.generatePenaltyPayment(user.id)
+            val report = UserManagementDomainService.generatePenaltyPayment(user)
             when {
                 report.records.isEmpty() -> content += "无逾期记录"
                 else -> {
                     report.records.forEach {
-                        content +=
-                                "${it.borrowDate} 所借书 ${it.bookId} 已逾期${it.day}天\r\n\r\n"
+                        content += "${it.borrowDate} 所借书 ${it.bookId} 已逾期${it.day}天\r\n\r\n"
                     }
                     content += "共收费${report.fee}元"
                 }
@@ -128,7 +125,7 @@ class UserManagementUiController : UiController {
                 updateItems()
             }
         }
-        tcId.setCellValueFactory { SimpleStringProperty(it.value.value.idProperty.get().substring(0, 6)) }
+        tcId.setCellValueFactory { SimpleStringProperty(it.value.value.idProperty.get().short) }
         tcName.setCellValueFactory { it.value.value.nameProperty }
         tcUsername.setCellValueFactory { it.value.value.usernameProperty }
         tcType.setCellValueFactory { it.value.value.typeProperty }

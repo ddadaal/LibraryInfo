@@ -8,7 +8,6 @@ import javafx.animation.Animation
 import javafx.animation.KeyFrame
 import javafx.animation.Timeline
 import javafx.application.Platform
-import javafx.beans.DefaultProperty
 import javafx.beans.NamedArg
 import javafx.collections.ListChangeListener
 import javafx.event.ActionEvent
@@ -22,14 +21,17 @@ import javafx.scene.layout.*
 import javafx.scene.text.Text
 import javafx.stage.Stage
 import javafx.util.Duration
-import libraryinfo.presentation.helpui.*
-import libraryinfo.presentation.internal.Globals
-import libraryinfo.presentation.internal.UiController
-import libraryinfo.presentation.notificationui.NotificationUiController
-import libraryinfo.appservice.login.LoginAppServiceFactory
+import libraryinfo.appservice.auth.AuthAppService
 import libraryinfo.domain.entity.user.ProfileChangeObserver
 import libraryinfo.domain.entity.user.User
+import libraryinfo.presentation.helpui.AboutPageController
+import libraryinfo.presentation.helpui.DialogStack
+import libraryinfo.presentation.helpui.makeDraggable
+import libraryinfo.presentation.helpui.makeResizeable
+import libraryinfo.presentation.internal.Globals
+import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
+import libraryinfo.presentation.notificationui.NotificationUiController
 import libraryinfo.util.DateHelper
 import java.time.LocalDateTime
 
@@ -59,10 +61,8 @@ class Framework(
     var onSwitchBackToHome: EventHandler<ActionEvent>? = null
     // function buttons
 
-    private val loginAppService = LoginAppServiceFactory.service
-
     private val currentUser: User
-        get() = loginAppService.currentUser!!
+        get() = AuthAppService.currentUser!!
 
     init {
         val loader = FXMLLoader(javaClass.getResource("/fxml/helpui/Framework.fxml"))
@@ -109,6 +109,10 @@ class Framework(
         Globals.stage = stage
     }
 
+    private fun onProfileChange(user: User) {
+        promptLabel.text = "欢迎你！${currentUser.role} ${currentUser.name}"
+    }
+
     @FXML
     private fun initialize() {
 
@@ -122,11 +126,11 @@ class Framework(
         timeline.play()
         switchBackToHome(null)
 
-        promptLabel.text = "欢迎你！${currentUser.type.name} ${currentUser.name}"
+        onProfileChange(currentUser)
 
         currentUser.registerProfileChange(object : ProfileChangeObserver {
             override fun onProfileChange(user: User, time: LocalDateTime) {
-                promptLabel.text = "欢迎你！${currentUser.type.name} ${currentUser.name}"
+                this@Framework.onProfileChange(user)
             }
         })
 

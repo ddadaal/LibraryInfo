@@ -5,7 +5,7 @@ import libraryinfo.domain.entity.book.Book
 import libraryinfo.domain.entity.book.doc.Doc
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
-import libraryinfo.vo.bookmanagement.BookInfoVo
+import libraryinfo.vo.bookmanagement.BookEditInfoVo
 
 class BookInfoUiController : UiController {
 
@@ -13,9 +13,9 @@ class BookInfoUiController : UiController {
     lateinit var categoryInput: JFXTextField
     lateinit var docs: ArrayList<Doc>
 
-    val bookInfo: BookInfoVo?
+    val bookInfo: BookEditInfoVo?
         get() =
-            if (nameInput.text != "" && categoryInput.text != "") BookInfoVo(nameInput.text, categoryInput.text, docs)
+            if (nameInput.text != "" && categoryInput.text != "") BookEditInfoVo(nameInput.text, categoryInput.text, docs)
             else null
 
     override fun load(): UiElement {

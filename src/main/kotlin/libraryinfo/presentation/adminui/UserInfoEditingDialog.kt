@@ -1,5 +1,6 @@
 package libraryinfo.presentation.adminui
 
+import libraryinfo.appservice.usermanagement.UserManagementAppService
 import libraryinfo.domain.entity.user.User
 import libraryinfo.presentation.internal.Globals
 import libraryinfo.presentation.internal.PromptDialogHelper

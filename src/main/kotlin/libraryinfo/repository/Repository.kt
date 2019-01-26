@@ -1,7 +1,6 @@
 package libraryinfo.repository
 
 import java.io.*
-import java.lang.Exception
 
 
 abstract class Repository<T : Serializable>(

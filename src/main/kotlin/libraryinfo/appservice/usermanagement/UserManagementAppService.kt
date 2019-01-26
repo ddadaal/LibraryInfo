@@ -1,7 +1,6 @@
 package libraryinfo.appservice.usermanagement
 
 import libraryinfo.domain.entity.user.User
-import libraryinfo.domain.service.usermanagement.UserManagementDomainService
 import libraryinfo.vo.usermanagement.BorrowReportVo
 import libraryinfo.vo.usermanagement.PenaltyPaymentVo
 import libraryinfo.vo.usermanagement.UserCreationVo
@@ -12,4 +11,8 @@ interface UserManagementAppService {
     fun createUser(info: UserCreationVo)
     fun generateReport(userId: UUID): BorrowReportVo
     fun generatePenaltyPayment(userId: UUID): PenaltyPaymentVo
+
+    companion object {
+        val service: UserManagementAppService = UserManagementAppServiceImpl()
+    }
 }

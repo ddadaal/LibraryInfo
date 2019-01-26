@@ -2,7 +2,8 @@ package libraryinfo.presentation.userui
 
 import com.jfoenix.controls.JFXButton
 import javafx.scene.layout.HBox
-import libraryinfo.appservice.login.LoginAppServiceFactory
+import libraryinfo.appservice.auth.AuthAppService
+import libraryinfo.domain.entity.user.User
 import libraryinfo.presentation.adminui.UserInfoUiController
 import libraryinfo.presentation.internal.PromptDialogHelper
 import libraryinfo.presentation.internal.UiController
@@ -13,7 +14,8 @@ class ProfileManagementUiController : UiController {
     lateinit var modifyButton: JFXButton
     lateinit var container: HBox
     lateinit var controller: UserInfoUiController
-    var user = LoginAppServiceFactory.service.currentUser!!
+    val user: User
+        get() = AuthAppService.currentUser!!
 
     override fun load(): UiElement {
         return doLoad("/fxml/userui/ProfileManagement.fxml")

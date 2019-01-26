@@ -6,8 +6,6 @@ import com.jfoenix.controls.RecursiveTreeItem
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
-import javafx.collections.ObservableList
-import javafx.scene.control.TreeItem
 
 class Pair(var key: String, var value: String) : RecursiveTreeObject<Pair>()
 

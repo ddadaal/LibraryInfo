@@ -1,8 +1,7 @@
 package libraryinfo.presentation.helpui
 
 import com.jfoenix.controls.JFXDialog
-
-import java.util.Stack
+import java.util.*
 
 class DialogStack {
     private val dialogStack = Stack<JFXDialog>()

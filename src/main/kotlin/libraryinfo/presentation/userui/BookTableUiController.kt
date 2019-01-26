@@ -1,26 +1,25 @@
 package libraryinfo.presentation.userui
 
-import com.jfoenix.controls.*
+import com.jfoenix.controls.JFXTextField
+import com.jfoenix.controls.JFXTreeTableColumn
+import com.jfoenix.controls.JFXTreeTableView
+import com.jfoenix.controls.RecursiveTreeItem
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.event.ActionEvent
 import javafx.scene.control.SelectionMode
 import javafx.scene.input.KeyCode
-import libraryinfo.appservice.login.LoginAppServiceFactory
 import libraryinfo.domain.entity.book.Book
-import libraryinfo.domain.exception.PermissionDeniedException
 import libraryinfo.presentation.internal.PromptDialogHelper
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.repository.book.BookRepository
-import libraryinfo.util.DateHelper
 
 
 class BookModel(val book: Book) : RecursiveTreeObject<BookModel>() {
-    val idProperty = SimpleStringProperty(book.id.toString())
+    val idProperty = SimpleObjectProperty(book.id)
     val nameProperty = SimpleStringProperty(book.name)
     val categoryProperty = SimpleStringProperty(book.category)
     val instanceRemainingProperty = SimpleObjectProperty(book.instances.filter { it.recordId == null }.count())
@@ -39,7 +38,6 @@ class BookTableUiController : UiController {
 
     private val books: ObservableList<BookModel> = FXCollections.observableArrayList()
 
-    private val loginAppService = LoginAppServiceFactory.service
 
 
     val selected: Book?
@@ -77,7 +75,7 @@ class BookTableUiController : UiController {
             }
         }
 
-        tcId.setCellValueFactory { SimpleStringProperty(it.value.value.idProperty.get().substring(0, 6)) }
+        tcId.setCellValueFactory { SimpleStringProperty(it.value.value.idProperty.get().short) }
         tcName.setCellValueFactory { it.value.value.nameProperty }
         tcCategory.setCellValueFactory { it.value.value.categoryProperty }
         tcInstanceRemaining.setCellValueFactory { SimpleStringProperty(it.value.value.instanceRemainingProperty.get().toString()) }

@@ -3,9 +3,11 @@ package libraryinfo.presentation.adminui
 import com.jfoenix.controls.JFXComboBox
 import com.jfoenix.controls.JFXTextField
 import libraryinfo.domain.entity.user.User
+import libraryinfo.domain.entity.user.role.UserRole
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.vo.usermanagement.UserEditVo
+import libraryinfo.vo.usermanagement.UserRolePreset
 
 
 class UserInfoUiController : UiController {
@@ -13,7 +15,7 @@ class UserInfoUiController : UiController {
     lateinit var tbUsername: JFXTextField
     lateinit var nameInput: JFXTextField
     lateinit var passwordInput: JFXTextField
-    lateinit var cbType: JFXComboBox<UserTypeComboBoxItem>
+    lateinit var cbType: JFXComboBox<UserRolePreset>
 
     fun initialize() {
         initializeComboBox(cbType)
@@ -25,7 +27,7 @@ class UserInfoUiController : UiController {
                 UserEditVo(
                     nameInput.text,
                     passwordInput.text,
-                    cbType.selectionModel.selectedItem.type
+                    cbType.selectionModel.selectedItem
                 )
             else null
 
@@ -37,7 +39,7 @@ class UserInfoUiController : UiController {
         tbUsername.text =user.username
         nameInput.text = user.name
         passwordInput.text = user.password
-        cbType.value = UserTypeComboBoxItem(user.type)
+        cbType.value = UserRolePreset.values().find { it.role == user.role }
         cbType.isDisable = !allowEditType
     }
 

@@ -7,8 +7,11 @@ import com.jfoenix.controls.RecursiveTreeItem
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.event.ActionEvent
-import libraryinfo.presentation.internal.*
-import libraryinfo.appservice.login.LoginAppServiceFactory
+import libraryinfo.appservice.auth.AuthAppService
+import libraryinfo.presentation.internal.Globals
+import libraryinfo.presentation.internal.PromptDialogHelper
+import libraryinfo.presentation.internal.UiController
+import libraryinfo.presentation.internal.UiElement
 import libraryinfo.util.DateHelper
 
 class NotificationUiController : UiController {
@@ -27,7 +30,6 @@ class NotificationUiController : UiController {
 
     var notificationModels = FXCollections.observableArrayList<NotificationModel>()!!
 
-    private val loginAppService = LoginAppServiceFactory.service
 
 
     val selected: NotificationModel?
@@ -40,15 +42,14 @@ class NotificationUiController : UiController {
 
     fun updateItems() {
         notificationModels.clear()
-        notificationModels.addAll(loginAppService.currentUser!!.unreadNotification.map { NotificationModel(it) })
+        notificationModels.addAll(AuthAppService.currentUser!!.unreadNotification.map { NotificationModel(it) })
     }
 
     fun initNotifyItem() {
         tableDateColumn.setCellValueFactory { SimpleStringProperty(DateHelper.fromDate(it.value.value.notification.date)) }
-        tableIdColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.id.toString().substring(0,6)) }
+        tableIdColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.id.short) }
         tableSenderColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.sender.name) }
         tableContentColumn.setCellValueFactory { SimpleStringProperty(it.value.value.notification.content) }
-
         val root = RecursiveTreeItem(notificationModels) { it.children }
 
         notificationTable.root = root

@@ -1,29 +1,12 @@
 package libraryinfo.presentation.userui
 
-import com.jfoenix.controls.JFXTreeTableColumn
-import com.jfoenix.controls.JFXTreeTableView
-import com.jfoenix.controls.RecursiveTreeItem
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject
-import javafx.beans.property.ObjectProperty
-import javafx.beans.property.SimpleObjectProperty
-import javafx.beans.property.SimpleStringProperty
-import javafx.collections.FXCollections
 import javafx.event.ActionEvent
-import javafx.event.EventHandler
-import javafx.scene.control.SelectionMode
-import javafx.scene.input.KeyCode
 import javafx.scene.layout.HBox
-import libraryinfo.appservice.login.LoginAppServiceFactory
-import libraryinfo.domain.entity.book.Book
-import libraryinfo.domain.entity.book.instance.BookInstance
+import libraryinfo.appservice.auth.AuthAppService
 import libraryinfo.domain.entity.user.User
 import libraryinfo.presentation.internal.PromptDialogHelper
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
-import libraryinfo.repository.book.BookRepository
-import libraryinfo.util.DateHelper
-import libraryinfo.vo.borrowrecord.BorrowRecordVo
-import java.time.LocalDateTime
 
 
 class MyBookUiController : UiController {
@@ -37,7 +20,7 @@ class MyBookUiController : UiController {
     }
 
     val user: User
-        get() = LoginAppServiceFactory.service.currentUser!!
+        get() = AuthAppService.SERVICE.currentUser!!
 
 
     override fun load(): UiElement {

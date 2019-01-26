@@ -1,9 +1,6 @@
 package libraryinfo.presentation.adminui
 
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject
-import javafx.beans.property.SimpleStringProperty
 import javafx.scene.layout.HBox
-import libraryinfo.domain.entity.book.Book
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.presentation.userui.BookTableUiController

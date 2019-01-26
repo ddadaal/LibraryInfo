@@ -9,11 +9,8 @@ import javafx.scene.input.MouseEvent
 import libraryinfo.presentation.internal.Globals
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
-
 import java.awt.Desktop
-import java.io.IOException
 import java.net.URI
-import java.net.URISyntaxException
 
 class AboutPageController : UiController {
     override fun load(): UiElement {

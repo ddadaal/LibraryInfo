@@ -13,15 +13,20 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.StackPane
 import javafx.stage.Stage
 import javafx.stage.StageStyle
-import libraryinfo.presentation.helpui.*
-import libraryinfo.presentation.internal.*
-import libraryinfo.appservice.login.LoginAppServiceFactory
+import libraryinfo.appservice.auth.AuthAppService
 import libraryinfo.domain.entity.notification.Notification
+import libraryinfo.domain.entity.user.role.UserRole
 import libraryinfo.domain.service.systeminit.SystemInitDomainService
+import libraryinfo.presentation.adminui.AdminUiController
+import libraryinfo.presentation.helpui.makeDraggable
+import libraryinfo.presentation.helpui.makeResizeable
+import libraryinfo.presentation.internal.Globals
+import libraryinfo.presentation.internal.UiController
+import libraryinfo.presentation.internal.UiElement
 import libraryinfo.presentation.mainui.MainUi
+import libraryinfo.presentation.userui.UserUiController
 import libraryinfo.repository.user.UserRepository
 import java.time.LocalDateTime
-import java.util.*
 
 class LoginUiController : UiController {
     override fun load(): UiElement {
@@ -35,7 +40,7 @@ class LoginUiController : UiController {
     lateinit var rootPane: BorderPane
     lateinit var loginButton: JFXButton
 
-    val loginAppService = LoginAppServiceFactory.service
+    private val authAppService = AuthAppService.SERVICE
 
     fun init(stage: Stage) {
         Globals.stage = stage
@@ -92,24 +97,27 @@ class LoginUiController : UiController {
 
                 val username = usernameField.text
 
-                if (loginAppService.login(username, passwordField.text)) {
+                if (authAppService.login(username, passwordField.text)) {
 
 
-                    val user = loginAppService.currentUser!!
+                    val user = authAppService.currentUser!!
 
-                    user.notifications.add(Notification(LocalDateTime.now(), SystemInitDomainService.SYS_USER.id, "您已成功登录。"))
+                    user.notify(SystemInitDomainService.SYS_USER, "您已经成功登录。")
+
                     UserRepository.save()
 
                     Globals.closeStage()
 
-                    // login successful
+                    // auth successful
                     // init the globals
 
                     Globals.loginTime = LocalDateTime.now()
 
                     val newStage = Stage()
 
-                    val ui = user.mainUiElement
+                    // choose the mainui
+
+                    val ui = if (user.role == UserRole.Admin) AdminUiController().load() else UserUiController().load()
 
                     val scene = Scene(ui.component)
                     newStage.scene = scene

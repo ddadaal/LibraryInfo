@@ -2,7 +2,7 @@ package libraryinfo.presentation.userui
 
 import javafx.event.ActionEvent
 import javafx.scene.text.Text
-import libraryinfo.appservice.login.LoginAppServiceFactory
+import libraryinfo.appservice.auth.AuthAppService
 import libraryinfo.presentation.internal.Globals
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
@@ -13,14 +13,12 @@ class UserHomeUiController : UiController {
     lateinit var textWelcome: Text
     lateinit var textLoginTime: Text
 
-    val loginAppService = LoginAppServiceFactory.service
-
     override fun load(): UiElement {
         return doLoad("/fxml/userui/UserHomeUi.fxml")
     }
 
     fun initialize() {
-        textWelcome.text += loginAppService.currentUser?.name
+        textWelcome.text += AuthAppService.currentUser?.name
         textLoginTime.text += DateHelper.fromDate(Globals.loginTime)
     }
 

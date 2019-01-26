@@ -6,6 +6,7 @@ import libraryinfo.domain.entity.book.doc.Doc
 import libraryinfo.presentation.internal.PromptDialogHelper
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
+import libraryinfo.presentation.userui.reader.ReaderFactory
 
 class DocItem(var doc: Doc) {
     override fun toString(): String {
@@ -32,7 +33,7 @@ class DocSelectionUiController: UiController {
         val selected = cbDoc.selectionModel.selectedItem
         if (selected != null) {
             PromptDialogHelper.start("", "")
-                .setContent(selected.doc.reader.display().component)
+                .setContent(ReaderFactory.getReader(selected.doc).display().component)
                 .createAndShow()
         }
     }

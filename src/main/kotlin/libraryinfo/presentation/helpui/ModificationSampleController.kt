@@ -2,7 +2,6 @@ package libraryinfo.presentation.helpui
 
 import com.jfoenix.controls.JFXTextField
 import javafx.event.ActionEvent
-import libraryinfo.presentation.internal.Globals
 import libraryinfo.presentation.internal.PromptDialogHelper
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement

@@ -8,7 +8,10 @@ import javafx.collections.FXCollections
 import javafx.event.EventHandler
 import javafx.scene.control.SelectionMode
 import javafx.scene.input.KeyCode
-import libraryinfo.presentation.internal.*
+import libraryinfo.presentation.internal.Globals
+import libraryinfo.presentation.internal.PromptDialogHelper
+import libraryinfo.presentation.internal.UiController
+import libraryinfo.presentation.internal.UiElement
 
 class StringRecursiveObject(val value: String): RecursiveTreeObject<StringRecursiveObject>() {
     val valueProperty: StringProperty = SimpleStringProperty(value)
