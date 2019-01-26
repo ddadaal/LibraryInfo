@@ -7,9 +7,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="libraryinfo.presentation.adminui.UserInfoUiController">
 
     <VBox alignment="CENTER" spacing="20.0">
+        <HBox>
+            <Label prefWidth="50.0" text="用户名" />
+            <JFXTextField disable="true" fx:id="tbUsername" />
+        </HBox>
         <HBox>
             <Label prefWidth="50.0" text="姓名" />
             <JFXTextField fx:id="nameInput" />
@@ -17,6 +22,10 @@
         <HBox>
             <Label prefWidth="50.0" text="密码" />
             <JFXTextField fx:id="passwordInput" />
+        </HBox>
+        <HBox>
+            <Label prefWidth="50.0" text="用户类型" />
+            <JFXComboBox fx:id="cbType" />
         </HBox>
       <padding>
          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

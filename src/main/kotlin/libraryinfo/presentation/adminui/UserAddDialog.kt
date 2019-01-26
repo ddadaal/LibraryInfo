@@ -20,41 +20,44 @@ import libraryinfo.repository.user.UserRepository
 import java.util.*
 import kotlin.collections.ArrayList
 
+
+
 class UserAddDialog(val onClose: () -> Unit, title: String, content: String) : PromptDialogHelper(title, content) {
     init {
 
         val nameInput = JFXTextField()
         val usernameInput = JFXTextField()
         val passwordInput = JFXTextField()
-        val userTypeInput = JFXComboBox<UserType>(
-                FXCollections.observableArrayList(
-                        UndergraduateType(), GraduateType(), TeacherType(), AdminType())
-        )
+        val userTypeInput = JFXComboBox<UserTypeComboBoxItem>()
+
+        initializeComboBox(userTypeInput)
+
         userTypeInput.value = userTypeInput.items[0]
 
         val container = VBox(
-                HBox(Label("用户名"), usernameInput),
-                HBox(Label("名字"), nameInput),
-                HBox(Label("用户类型"), userTypeInput),
-                HBox(Label("密码"), passwordInput)
+            HBox(Label("用户名"), usernameInput),
+            HBox(Label("名字"), nameInput),
+            HBox(Label("用户类型"), userTypeInput),
+            HBox(Label("密码"), passwordInput)
         )
 
         addVBox(container)
 
         addButton("确认修改", "") {
             if (nameInput.text != "" && usernameInput.text != ""
-                    && passwordInput.text != null) {
+                && passwordInput.text != null
+            ) {
                 UserRepository.data.add(
-                        User(
-                                UUID.randomUUID(),
-                                usernameInput.text,
-                                nameInput.text,
-                                passwordInput.text,
-                                userTypeInput.value,
-                                ArrayList(),
-                                ArrayList(),
-                                ArrayList()
-                        )
+                    User(
+                        UUID.randomUUID(),
+                        usernameInput.text,
+                        nameInput.text,
+                        passwordInput.text,
+                        userTypeInput.value.type,
+                        ArrayList(),
+                        ArrayList(),
+                        ArrayList()
+                    )
                 )
                 UserRepository.save()
                 Globals.framework.dialogStack.closeCurrentAndPopAndShowNext()

@@ -4,14 +4,15 @@ import libraryinfo.domain.entity.book.instance.BookInstance
 import libraryinfo.vo.borrowrecord.BorrowRecordVo
 import libraryinfo.domain.entity.notification.Notification
 import libraryinfo.domain.entity.user.usertype.UserType
-import libraryinfo.domain.exception.BorrowBookException
 import libraryinfo.domain.exception.PermissionDeniedException
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.repository.user.UserRepository
-import libraryinfo.vo.usermanagement.UserInfoVo
+import libraryinfo.vo.usermanagement.UserEditVo
 import java.io.Serializable
 import java.time.LocalDateTime
 import java.util.*
+import java.io.IOException
+import kotlin.collections.ArrayList
 
 
 class User() : Serializable, ProfileChangeObserver {
@@ -26,6 +27,7 @@ class User() : Serializable, ProfileChangeObserver {
     lateinit var ownedBookInstances: ArrayList<BookInstance>
     lateinit var borrowRecords: ArrayList<BorrowRecordVo>
 
+    @Transient
     private var profileChangeObservers = ArrayList<ProfileChangeObserver>()
 
     val mainUiElement: UiElement
@@ -54,6 +56,12 @@ class User() : Serializable, ProfileChangeObserver {
         this.notifications = notifications
         this.borrowRecords = borrowRecords
         this.ownedBookInstances = ownedBookInstances
+    }
+
+    @Throws(IOException::class, ClassNotFoundException::class)
+    private fun readObject(`in`: java.io.ObjectInputStream) {
+        `in`.defaultReadObject()
+        profileChangeObservers = ArrayList<ProfileChangeObserver>()
     }
 
     fun borrowBook(bookInstance: BookInstance): UUID {
@@ -85,9 +93,10 @@ class User() : Serializable, ProfileChangeObserver {
         }
     }
 
-    fun updateInformation(info: UserInfoVo) {
+    fun updateInformation(info: UserEditVo) {
         this.name = info.name
         this.password = info.password
+        this.type = info.type
         val time = LocalDateTime.now()
         profileChangeObservers.forEach { it.onProfileChange(this, time) }
 

@@ -27,8 +27,11 @@ import libraryinfo.presentation.internal.Globals
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.notificationui.NotificationUiController
 import libraryinfo.appservice.login.LoginAppServiceFactory
+import libraryinfo.domain.entity.user.ProfileChangeObserver
+import libraryinfo.domain.entity.user.User
 import libraryinfo.presentation.internal.UiElement
 import libraryinfo.util.DateHelper
+import java.time.LocalDateTime
 
 //@DefaultProperty("children")
 class Framework(
@@ -57,6 +60,9 @@ class Framework(
     // function buttons
 
     private val loginAppService = LoginAppServiceFactory.service
+
+    private val currentUser: User
+        get() = loginAppService.currentUser!!
 
     init {
         val loader = FXMLLoader(javaClass.getResource("/fxml/helpui/Framework.fxml"))
@@ -116,7 +122,14 @@ class Framework(
         timeline.play()
         switchBackToHome(null)
 
-        promptLabel.text = "欢迎你！" + loginAppService.currentUser?.name
+        promptLabel.text = "欢迎你！${currentUser.type.name} ${currentUser.name}"
+
+        currentUser.registerProfileChange(object : ProfileChangeObserver {
+            override fun onProfileChange(user: User, time: LocalDateTime) {
+                promptLabel.text = "欢迎你！${currentUser.type.name} ${currentUser.name}"
+            }
+        })
+
 
         notificationUi = NotificationUiController().load()
 

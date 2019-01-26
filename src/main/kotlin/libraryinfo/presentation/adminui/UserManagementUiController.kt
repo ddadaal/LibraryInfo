@@ -12,6 +12,7 @@ import javafx.scene.control.SelectionMode
 import javafx.scene.input.KeyCode
 import libraryinfo.appservice.usermanagement.UserManagementAppServiceFactory
 import libraryinfo.domain.entity.user.User
+import libraryinfo.domain.service.systeminit.SystemInitDomainService
 import libraryinfo.presentation.internal.PromptDialogHelper
 import libraryinfo.presentation.internal.ReadOnlyPairTableHelper
 import libraryinfo.presentation.internal.UiController
@@ -44,8 +45,8 @@ class UserManagementUiController : UiController {
 
             } catch (e: Exception) {
                 PromptDialogHelper("未选择！", "请先选择一位用户！")
-                        .addCloseButton("好", "CHECK", null)
-                        .createAndShow()
+                    .addCloseButton("好", "CHECK", null)
+                    .createAndShow()
                 null
             }
 
@@ -62,8 +63,14 @@ class UserManagementUiController : UiController {
     fun onModifyButtonClicked() {
         val user = selected
         if (user != null) {
-            UserInfoEditingDialog(user, { updateItems() }, "修改用户信息", "")
-                    .createAndShow()
+            UserInfoEditingDialog(
+                user,
+                { updateItems() },
+                "修改用户信息", 
+                "",
+                true
+            )
+                .createAndShow()
         }
     }
 
@@ -71,8 +78,8 @@ class UserManagementUiController : UiController {
         val user = selected
         if (user != null) {
             PromptDialogHelper("借书记录", "")
-                    .setContent(ReadOnlyPairTableHelper.start().addPair("key", "value").create())
-                    .createAndShow()
+                .setContent(ReadOnlyPairTableHelper.start().addPair("key", "value").create())
+                .createAndShow()
         }
     }
 
@@ -90,8 +97,8 @@ class UserManagementUiController : UiController {
         val query = tfSearch.text
         users.clear()
         UserRepository.data
-                .filter { it.name.contains(query) || it.username.contains(query) }
-                .forEach { users.add(UserModel(it)) }
+            .filter { it != SystemInitDomainService.SYS_USER && (it.name.contains(query) || it.username.contains(query)) }
+            .forEach { users.add(UserModel(it)) }
     }
 
     private fun initTable() {

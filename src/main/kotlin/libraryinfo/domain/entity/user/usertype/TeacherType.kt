@@ -7,6 +7,7 @@ import libraryinfo.domain.entity.user.strategy.borrow.TeacherBorrowStrategy
 import libraryinfo.domain.entity.user.strategy.usermanagement.DynamicUserManagementStrategy
 import libraryinfo.domain.entity.user.strategy.usermanagement.UserManagementStrategy
 import libraryinfo.presentation.internal.UiElement
+import libraryinfo.presentation.userui.UserUiController
 
 class TeacherType : UserType {
 
@@ -19,7 +20,7 @@ class TeacherType : UserType {
     override val bookManagementStrategy: BookManagementStrategy = NoBookManagementStrategy()
 
     override val mainUiElement: UiElement
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = UserUiController().load()
     override val isAdmin: Boolean = false
 
 }

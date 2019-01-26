@@ -21,86 +21,94 @@ class UserManagementTest {
 
     @Test
     fun testPenalty() {
-        val user = UserRepository.data.find { it.id ==userId }!!
+        val user = UserRepository.data.find { it.id == userId }!!
         user.borrowRecords.clear()
         user.borrowRecords.addAll(
-                arrayListOf(
-                        BorrowRecordVo(LocalDateTime.now().minusDays(16),
-                                UUID.randomUUID(),
-                                Duration.ofDays(15),
-                                null),
-                        BorrowRecordVo(LocalDateTime.now().minusDays(13),
-                                UUID.randomUUID(),
-                                Duration.ofDays(15),
-                                null),
-                        BorrowRecordVo(LocalDateTime.now().minusDays(16),
-                                UUID.randomUUID(),
-                                Duration.ofDays(15),
-                                LocalDateTime.MIN)
+            arrayListOf(
+                BorrowRecordVo(
+                    LocalDateTime.now().minusDays(16),
+                    UUID.randomUUID(),
+                    Duration.ofDays(15),
+                    null
+                ),
+                BorrowRecordVo(
+                    LocalDateTime.now().minusDays(13),
+                    UUID.randomUUID(),
+                    Duration.ofDays(15),
+                    null
+                ),
+                BorrowRecordVo(
+                    LocalDateTime.now().minusDays(16),
+                    UUID.randomUUID(),
+                    Duration.ofDays(15),
+                    LocalDateTime.MIN
                 )
+            )
         )
         assert(UserRepository.data.find { it.isAdmin }!!.type.userManagementStrategy.generatePenaltyPayment(userId).fee == 1.0)
     }
 
+    @Test
     @BeforeEach
     fun insertInitialData() {
 
         UserRepository.save(
-                arrayListOf(
-                        User(
-                                userId,
-                                "test",
-                                "Test User",
-                                "test",
-                                UndergraduateType(),
-                                arrayListOf(
-                                        Notification(
-                                                LocalDateTime.now(),
-                                                userId,
-                                                "Test notification"
-                                        )
-                                ),
-                                ArrayList(),
-                                ArrayList()
-                        ),
-                        User(UUID.randomUUID(),
-                                "admin",
-                                "admin",
-                                "admin",
-                                AdminType(),
-                                ArrayList(),
-                                ArrayList(),
-                                ArrayList()
+            arrayListOf(
+                User(
+                    userId,
+                    "test",
+                    "Test User",
+                    "test",
+                    UndergraduateType(),
+                    arrayListOf(
+                        Notification(
+                            LocalDateTime.now(),
+                            userId,
+                            "Test notification"
                         )
+                    ),
+                    ArrayList(),
+                    ArrayList()
+                ),
+                User(
+                    UUID.randomUUID(),
+                    "admin",
+                    "admin",
+                    "admin",
+                    AdminType(),
+                    ArrayList(),
+                    ArrayList(),
+                    ArrayList()
                 )
+            )
         )
 
         val book1Id = UUID.randomUUID()
         val book2Id = UUID.randomUUID()
 
         BookRepository.save(
-                arrayListOf(
-                        Book(
-                                book1Id,
-                                "1",
-                                "1",
-                                ArrayList(),
-                                arrayListOf(
-                                        BookInstance(UUID.randomUUID(), book1Id),
-                                        BookInstance(UUID.randomUUID(), book1Id)
-                                )
-                        ),
-                        Book(
-                                book2Id,
-                                "2",
-                                "2",
-                                ArrayList(),
-                                arrayListOf(
-                                        BookInstance(UUID.randomUUID(), book2Id),
-                                        BookInstance(UUID.randomUUID(), book2Id)
-                                )
-                        )
+            arrayListOf(
+                Book(
+                    book1Id,
+                    "1",
+                    "1",
+                    ArrayList(),
+                    arrayListOf(
+                        BookInstance(UUID.randomUUID(), book1Id),
+                        BookInstance(UUID.randomUUID(), book1Id)
+                    )
+                ),
+                Book(
+                    book2Id,
+                    "2",
+                    "2",
+                    ArrayList(),
+                    arrayListOf(
+                        BookInstance(UUID.randomUUID(), book2Id),
+                        BookInstance(UUID.randomUUID(), book2Id)
+                    )
                 )
+            )
         )
 
 

@@ -8,6 +8,7 @@ import libraryinfo.domain.entity.user.strategy.borrow.UndergraduateBorrowStrateg
 import libraryinfo.domain.entity.user.strategy.usermanagement.DynamicUserManagementStrategy
 import libraryinfo.domain.entity.user.strategy.usermanagement.UserManagementStrategy
 import libraryinfo.presentation.internal.UiElement
+import libraryinfo.presentation.userui.UserUiController
 
 class GraduateType : UserType {
     override val name: String = "研究生"
@@ -19,7 +20,7 @@ class GraduateType : UserType {
     override val bookManagementStrategy: BookManagementStrategy = NoBookManagementStrategy()
 
     override val mainUiElement: UiElement
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = UserUiController().load()
 
     override val isAdmin: Boolean = false
 

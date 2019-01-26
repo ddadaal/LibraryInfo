@@ -4,10 +4,9 @@ import com.jfoenix.controls.JFXButton
 import javafx.scene.layout.HBox
 import libraryinfo.appservice.login.LoginAppServiceFactory
 import libraryinfo.presentation.adminui.UserInfoUiController
-import libraryinfo.presentation.internal.Globals
+import libraryinfo.presentation.internal.PromptDialogHelper
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
-import libraryinfo.repository.user.UserRepository
 
 class ProfileManagementUiController : UiController {
 
@@ -23,16 +22,17 @@ class ProfileManagementUiController : UiController {
     fun initialize() {
         val element = UserInfoUiController().load()
         controller = element.getController()
-        controller.setUser(user)
+        controller.init(user, false)
         container.children.add(element.component)
     }
 
     fun onModifyButtonClicked() {
         val userInfo = controller.userInfo
         if (userInfo != null) {
-            user.name = userInfo.name
-            user.password = userInfo.password
-            UserRepository.save()
+            user.updateInformation(userInfo)
+            PromptDialogHelper.start("修改成功", "用户信息修改成功！")
+                .addCloseButton("好", "CHECK", null)
+                .createAndShow()
         }
     }
 

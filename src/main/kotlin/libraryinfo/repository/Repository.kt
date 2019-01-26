@@ -11,7 +11,7 @@ abstract class Repository<T : Serializable>(
 
     var filePath = getFilePath(name)
 
-    var data: T = retrieveData()
+    open var data: T = retrieveData()
 
     @Suppress("UNCHECKED_CAST")
     private fun retrieveData(): T {

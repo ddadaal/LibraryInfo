@@ -22,9 +22,7 @@ class BookInfoEditingDialog(val book: Book, val onClose: () -> Unit, title: Stri
         addButton("确认修改", "") {
             val bookInfo = controller.bookInfo
             if (bookInfo != null) {
-                book.name = bookInfo.name
-                book.category = bookInfo.category
-                UserRepository.save()
+                book.edit(bookInfo)
                 Globals.framework.dialogStack.closeCurrentAndPopAndShowNext()
                 onClose()
             }
