@@ -40,12 +40,12 @@ class BookBrowseUiController : UiController {
     fun onBtnBorrowClicked(actionEvent: ActionEvent) {
         val book = tableController.selected
         if (book != null) {
-            if (book.instances.isEmpty()) {
+            if (book.instances.filter { it.recordId == null }.isEmpty()) {
                 PromptDialogHelper.start("没有剩余的书", "书已经被全部借完了！下次要快一点哦！")
                         .addCloseButton("好", "CHECK", null)
                         .createAndShow()
             } else {
-                val instance = book.instances[0]
+                val instance = book.instances.filter { it.recordId == null }[0]
                 val user = loginAppService.currentUser!!
                 try {
                     val recordId = user.borrowBook(instance)

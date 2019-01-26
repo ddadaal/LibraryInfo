@@ -6,6 +6,7 @@ import libraryinfo.domain.entity.notification.Notification
 import libraryinfo.domain.entity.user.usertype.UserType
 import libraryinfo.domain.exception.PermissionDeniedException
 import libraryinfo.presentation.internal.UiElement
+import libraryinfo.repository.book.BookRepository
 import libraryinfo.repository.user.UserRepository
 import libraryinfo.vo.usermanagement.UserEditVo
 import java.io.Serializable
@@ -24,7 +25,7 @@ class User() : Serializable, ProfileChangeObserver {
     lateinit var password: String
     lateinit var type: UserType
     lateinit var notifications: ArrayList<Notification>
-    lateinit var ownedBookInstances: ArrayList<BookInstance>
+    lateinit var ownedBookInstanceIds: ArrayList<UUID>
     lateinit var borrowRecords: ArrayList<BorrowRecordVo>
 
     @Transient
@@ -36,6 +37,14 @@ class User() : Serializable, ProfileChangeObserver {
     val unreadNotification: List<Notification>
         get() = notifications.filter { !it.read }
 
+    var ownedBookInstances: List<BookInstance> = emptyList()
+        get() {
+            return ownedBookInstanceIds.map {
+                BookRepository.data.find { b -> b.instances.find { i -> i.id == it } != null }!!.instances.find { i -> i.id == it }!!
+            }
+        }
+
+
 
 
     constructor(
@@ -46,7 +55,7 @@ class User() : Serializable, ProfileChangeObserver {
             type: UserType,
             notifications: ArrayList<Notification>,
             borrowRecords: ArrayList<BorrowRecordVo>,
-            ownedBookInstances: ArrayList<BookInstance>
+            ownedBookInstanceIds: ArrayList<UUID>
     ) : this() {
         this.username = username
         this.id = id
@@ -55,7 +64,7 @@ class User() : Serializable, ProfileChangeObserver {
         this.type = type
         this.notifications = notifications
         this.borrowRecords = borrowRecords
-        this.ownedBookInstances = ownedBookInstances
+        this.ownedBookInstanceIds = ownedBookInstanceIds
     }
 
     @Throws(IOException::class, ClassNotFoundException::class)
@@ -72,7 +81,7 @@ class User() : Serializable, ProfileChangeObserver {
             borrowRecords.add(record)
 
             bookInstance.borrowBook(record.id)
-            ownedBookInstances.add(bookInstance)
+            ownedBookInstanceIds.add(bookInstance.id)
 
             UserRepository.save()
             return record.id
@@ -87,7 +96,7 @@ class User() : Serializable, ProfileChangeObserver {
             record.returnTime = LocalDateTime.now()
 
             bookInstance.returnBook()
-            ownedBookInstances.remove(bookInstance)
+            ownedBookInstanceIds.remove(bookInstance.id)
 
             UserRepository.save()
         }

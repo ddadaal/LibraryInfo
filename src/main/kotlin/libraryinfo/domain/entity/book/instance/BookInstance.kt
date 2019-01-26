@@ -6,7 +6,7 @@ import libraryinfo.vo.borrowrecord.BorrowRecordVo
 import java.io.Serializable
 import java.util.*
 
-class BookInstance(): Serializable {
+class BookInstance() : Serializable {
     lateinit var id: UUID
     lateinit var bookId: UUID
     var recordId: UUID? = null
@@ -15,7 +15,7 @@ class BookInstance(): Serializable {
         get() = BookRepository.data.find { it.id == bookId }!!
 
 
-    constructor(id: UUID, bookId: UUID, recordId: UUID? = null): this() {
+    constructor(id: UUID, bookId: UUID, recordId: UUID? = null) : this() {
         this.id = id
         this.bookId = bookId
         this.recordId = recordId

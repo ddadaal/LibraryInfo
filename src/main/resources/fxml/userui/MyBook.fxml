@@ -1,26 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.Font?>
-<?import javafx.geometry.Insets?>
-<?import com.jfoenix.controls.JFXMasonryPane?>
-<?import com.jfoenix.controls.JFXButton?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
-<?import com.jfoenix.controls.JFXTreeTableColumn?>
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="libraryinfo.presentation.userui.MyBookUiController"
-      prefHeight="400.0" prefWidth="600.0">
+<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="libraryinfo.presentation.userui.MyBookUiController">
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
@@ -33,19 +21,14 @@
         <padding>
             <Insets right="10.0" />
         </padding>
+        <VBox.margin>
+            <Insets bottom="10.0" />
+        </VBox.margin>
     </HBox>
-    <JFXTreeTableView fx:id="tableBooks" prefHeight="500.0" prefWidth="800.0">
-        <columns>
-            <JFXTreeTableColumn fx:id="tcInstanceId" prefWidth="200" text="书实例编号" />
-            <JFXTreeTableColumn fx:id="tcName" editable="false" prefWidth="150" text="书名" />
-            <JFXTreeTableColumn fx:id="tcCategory" prefWidth="150" text="类别" />
-            <JFXTreeTableColumn fx:id="tcBorrowTime" prefWidth="150" text="借书时间" />
-            <JFXTreeTableColumn fx:id="tcReturnDeadline" prefWidth="150" text="最晚还书时间" />
-        </columns>
-    </JFXTreeTableView>
+    <HBox fx:id="container" />
     <HBox alignment="CENTER_LEFT" maxHeight="60.0" maxWidth="2000.0" prefHeight="60.0" prefWidth="600.0">
         <padding>
-            <Insets bottom="10" right="20" top="10" />
+            <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
         </padding>
         <JFXButton buttonType="RAISED" onAction="#onBtnRefreshClicked" style="-fx-background-color: #424242; -fx-text-fill: #FFFFFF" text="刷新">
             <graphic>

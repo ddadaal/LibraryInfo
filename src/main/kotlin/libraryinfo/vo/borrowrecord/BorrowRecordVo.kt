@@ -12,6 +12,7 @@ class BorrowRecordVo(): Serializable {
     var returnTime: LocalDateTime? = null
     lateinit var id: UUID
 
+
     constructor(borrowTime: LocalDateTime, bookInstanceId: UUID, duration: Duration, returnTime: LocalDateTime?): this() {
         this.borrowTime = borrowTime
         this.duration = duration

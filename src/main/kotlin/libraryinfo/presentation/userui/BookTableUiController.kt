@@ -19,15 +19,15 @@ import libraryinfo.repository.book.BookRepository
 import libraryinfo.util.DateHelper
 
 
-class BookModel(val book: Book): RecursiveTreeObject<BookModel>() {
+class BookModel(val book: Book) : RecursiveTreeObject<BookModel>() {
     val idProperty = SimpleStringProperty(book.id.toString())
     val nameProperty = SimpleStringProperty(book.name)
     val categoryProperty = SimpleStringProperty(book.category)
-    val instanceRemainingProperty = SimpleObjectProperty(book.instances)
+    val instanceRemainingProperty = SimpleObjectProperty(book.instances.filter { it.recordId == null }.count())
     val formatsProperty = SimpleObjectProperty(book.availableDocs)
 }
 
-class BookTableUiController: UiController {
+class BookTableUiController : UiController {
 
     lateinit var tfSearch: JFXTextField
     lateinit var tableBooks: JFXTreeTableView<BookModel>
@@ -77,11 +77,11 @@ class BookTableUiController: UiController {
             }
         }
 
-        tcId.setCellValueFactory { SimpleStringProperty(it.value.value.idProperty.get().substring(0,6))}
+        tcId.setCellValueFactory { SimpleStringProperty(it.value.value.idProperty.get().substring(0, 6)) }
         tcName.setCellValueFactory { it.value.value.nameProperty }
         tcCategory.setCellValueFactory { it.value.value.categoryProperty }
-        tcInstanceRemaining.setCellValueFactory { SimpleStringProperty(it.value.value.instanceRemainingProperty.get().size.toString())}
-        tcFormat.setCellValueFactory { SimpleStringProperty(it.value.value.formatsProperty.get().joinToString(", ") { doc -> doc.name })}
+        tcInstanceRemaining.setCellValueFactory { SimpleStringProperty(it.value.value.instanceRemainingProperty.get().toString()) }
+        tcFormat.setCellValueFactory { SimpleStringProperty(it.value.value.formatsProperty.get().joinToString(", ") { doc -> doc.name }) }
 
         val root = RecursiveTreeItem<BookModel>(books) { it.children }
         tableBooks.root = root

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTreeTableColumn?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="500" prefWidth="900" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="libraryinfo.presentation.userui.BorrowRecordTableUiController">
+
+    <JFXTreeTableView fx:id="tableBooks" prefHeight="500.0" prefWidth="800.0">
+        <columns>
+            <JFXTreeTableColumn fx:id="tcInstanceId" prefWidth="200" text="书实例编号" />
+            <JFXTreeTableColumn fx:id="tcName" editable="false" prefWidth="150" text="书名" />
+            <JFXTreeTableColumn fx:id="tcCategory" prefWidth="150" text="类别" />
+            <JFXTreeTableColumn fx:id="tcBorrowTime" prefWidth="150" text="借书时间" />
+            <JFXTreeTableColumn fx:id="tcReturnDeadline" prefWidth="150" text="最晚还书时间" />
+        </columns>
+    </JFXTreeTableView>
+</VBox>

@@ -26,12 +26,12 @@ class Book(): Serializable {
 
     fun borrow(instance: BookInstance) {
 
-        this.instances.remove(instance)
+//        this.instances.remove(instance)
         BookRepository.save()
     }
 
     fun `return`(instance: BookInstance) {
-        this.instances.add(instance)
+//        this.instances.add(instance)
         BookRepository.save()
     }
 

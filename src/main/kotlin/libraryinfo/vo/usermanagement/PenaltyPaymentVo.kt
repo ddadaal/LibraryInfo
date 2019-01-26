@@ -2,20 +2,29 @@ package libraryinfo.vo.usermanagement
 
 import libraryinfo.vo.borrowrecord.BorrowRecordVo
 import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalDateTime
 
-
-data class PenaltyPaymentVo(
-        var penaltyRecords: List<BorrowRecordVo>
-) {
-    var fee: Double = 0.0
-        get() = penaltyRecords.filter {
-            it.returnTime == null &&
-                    (LocalDateTime.now()).isAfter(it.borrowTime.plusDays(it.duration.toDays()))
+data class PenaltyItem(private var record: BorrowRecordVo) {
+    var bookId: String = record.bookInstanceId.toString().substring(0, 6)
+    var borrowDate: LocalDate = record.borrowTime.toLocalDate()
+    var day = 0
+        get() {
+            return Duration.between(LocalDateTime.now(), record.borrowTime.plusDays(record.duration.toDays()))
+                    .abs()
+                    .toDays().toInt()
         }
+
+}
+
+
+data class PenaltyPaymentVo(private var items: List<BorrowRecordVo>) {
+    val records: List<PenaltyItem> = items
+
+            .map { PenaltyItem(it) }
+    var fee: Double = 0.0
+        get() = records
                 .sumByDouble {
-                    Duration.between(LocalDateTime.now(), it.borrowTime.plusDays(it.duration.toDays()))
-                            .abs()
-                            .toDays() * 1.0
+                    it.day * 1.0
                 }
 }

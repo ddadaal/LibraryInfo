@@ -17,6 +17,7 @@ import libraryinfo.presentation.internal.PromptDialogHelper
 import libraryinfo.presentation.internal.ReadOnlyPairTableHelper
 import libraryinfo.presentation.internal.UiController
 import libraryinfo.presentation.internal.UiElement
+import libraryinfo.presentation.userui.BorrowRecordTableUiController
 import libraryinfo.repository.user.UserRepository
 
 class UserModel(val user: User) : RecursiveTreeObject<UserModel>() {
@@ -77,15 +78,35 @@ class UserManagementUiController : UiController {
     fun onReportButtonClicked() {
         val user = selected
         if (user != null) {
+            val element = BorrowRecordTableUiController().load()
+            element.getController<BorrowRecordTableUiController>().propsUser = user
             PromptDialogHelper("借书记录", "")
-                .setContent(ReadOnlyPairTableHelper.start().addPair("key", "value").create())
-                .createAndShow()
+                    .setContent(element.component)
+                    .createAndShow()
         }
     }
 
     fun onPaymentButtonClicked() {
-
+        val user = selected
+        if (user != null) {
+            var content = ""
+            print(user.id)
+            val report = userManagementService.generatePenaltyPayment(user.id)
+            when {
+                report.records.isEmpty() -> content += "无逾期记录"
+                else -> {
+                    report.records.forEach {
+                        content +=
+                                "${it.borrowDate} 所借书 ${it.bookId} 已逾期${it.day}天\r\n\r\n"
+                    }
+                    content += "共收费${report.fee}元"
+                }
+            }
+            PromptDialogHelper("逾期费用", content)
+                    .createAndShow()
+        }
     }
+
 
 
     fun initialize() {
